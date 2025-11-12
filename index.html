@@ -3,62 +3,103 @@
 <head>
   <meta charset="UTF-8" />
   <title>Proof of Build</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Proof of Build is a Base-native collectible for early miniapp creators and supporters." />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Proof of Build is a Base-native collectible for early miniapp creators and supporters. Mint as many as you want, keep it as your onchain builder badge" />
 
-  <!-- Open Graph -->
+  <!-- Open Graph (pakai URL absolut supaya preview/miniapp tidak blank) -->
   <meta property="og:title" content="Proof of Build" />
-  <meta property="og:description" content="Mint your onchain builder badge." />
+  <meta property="og:description" content="POB." />
   <meta property="og:image" content="https://pob-lyart.vercel.app/og.png" />
-  <meta property="og:url" content="https://pob-lyart.vercel.app/index.html" />
+  <meta property="og:url" content="https://pob-lyart.vercel.app" />
   <meta property="og:type" content="website" />
 
-  <!-- Farcaster MiniApp Embed -->
+  <!-- Farcaster MiniApp Embed (button di Warpcast) -->
   <meta name="fc:miniapp"
-    content='{"version":"1","imageUrl":"https://pob-lyart.vercel.app/og.png","button":{"title":"Mint POB","action":{"type":"launch_miniapp","name":"Proof of Build","url":"https://pob-lyart.vercel.app/index.html","splashImageUrl":"https://pob-lyart.vercel.app/icon.png","splashBackgroundColor":"#0d1117"}}}' />
+        content='{
+          "version":"1",
+          "imageUrl":"https://pob-lyart.vercel.app/og.png",
+          "button":{
+            "title":"Mint POB",
+            "action":{
+              "type":"launch_miniapp",
+              "name":"Proof of Build",
+              "url":"https://pob-lyart.vercel.app",
+              "splashImageUrl":"https://pob-lyart.vercel.app/icon.png",
+              "splashBackgroundColor":"#0d1117"
+            }
+          }
+        }' />
 
   <link rel="icon" type="image/png" href="https://pob-lyart.vercel.app/icon.png" />
 
   <style>
-    :root{--bg:#0a0f12;--panel:#0d1419;--text:#dfe6eb;--muted:#9fb0bb;--brand:#53e6ff;--brand-weak:rgba(83,230,255,.15);--max:880px}
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;background:#0a0f12;color:var(--text);font:500 16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial}
-    .wrap{max-width:var(--max);margin:32px auto;padding:0 16px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.06);border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.5);overflow:hidden}
-    .hero{padding:16px;background:linear-gradient(180deg,#121a20,#0c1216);border-bottom:1px solid rgba(255,255,255,.06)}
-    .hero img{width:100%;display:block;border-radius:16px}
+    :root{
+      --bg:#0a0f12; --panel:#0d1419; --text:#dfe6eb; --muted:#9fb0bb;
+      --brand:#53e6ff; --brand-weak:rgba(83,230,255,.15); --ring:rgba(83,230,255,.35);
+      --radius:18px; --shadow:0 10px 40px rgba(0,0,0,.5); --glow:0 0 0 1px rgba(255,255,255,.08), 0 0 40px var(--brand-weak);
+      --max:880px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:radial-gradient(1200px 700px at 50% -10%, #10202a 0%, var(--bg) 55%) fixed;
+      color:var(--text); font:500 16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;
+    }
+    .wrap{max-width:var(--max); margin:32px auto; padding:0 16px}
+    .card{
+      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:calc(var(--radius) + 6px);
+      box-shadow:var(--shadow); overflow:hidden;
+    }
+    .hero{position:relative; padding:16px; background:linear-gradient(180deg,#121a20,#0c1216); border-bottom:1px solid rgba(255,255,255,.06)}
+    .hero figure{margin:0; border-radius:24px; overflow:hidden; box-shadow:var(--glow); aspect-ratio:1000/679; background:#000}
+    .hero img{width:100%; height:100%; object-fit:cover; display:block}
     .content{padding:22px}
-    h1{margin:.2rem 0 1rem;font-weight:700;font-size:clamp(22px,3.2vw,28px)}
+    h1{margin:.2rem 0 1rem; font-weight:700; letter-spacing:.2px; font-size:clamp(22px,3.2vw,28px)}
     .muted{color:var(--muted)}
-    .grid{display:grid;gap:14px;grid-template-columns:1fr auto;align-items:center;margin:14px 0 16px}
-    .row{display:flex;gap:12px;align-items:center;margin:16px 0}
-    input.qty{width:140px;height:48px;border-radius:12px;background:#0b1216;border:1px solid rgba(255,255,255,.08);color:var(--text);padding:0 14px;font:600 16px/48px inherit}
-    .btn{height:48px;padding:0 22px;border-radius:14px;border:0;cursor:pointer;font-weight:700}
-    .btn-primary{background:linear-gradient(180deg,rgba(83,230,255,.9),rgba(43,170,210,.9));color:#001317;box-shadow:0 10px 30px var(--brand-weak)}
-    .btn-outline{background:transparent;color:var(--text);border:1.5px solid rgba(83,230,255,.35)}
-    .addr{margin-top:10px;display:inline-block;font-size:14px;color:var(--muted);padding:10px 14px;border:1px dashed rgba(255,255,255,.12);border-radius:12px}
-    @media (max-width:560px){.grid{grid-template-columns:1fr}.row{flex-direction:column;align-items:stretch}input.qty,.btn{width:100%}}
+    .grid{display:grid; gap:14px; grid-template-columns:1fr auto; align-items:center; margin:14px 0 16px}
+    .stat{font-size:14px; color:var(--muted)}
+    .stat b{color:var(--text)}
+    .row{display:flex; gap:12px; align-items:center; margin:16px 0}
+    input.qty{width:140px; height:48px; border-radius:12px; background:#0b1216; border:1px solid rgba(255,255,255,.08); color:var(--text); padding:0 14px; font:600 16px/48px inherit}
+    .btn{height:48px; padding:0 22px; border-radius:14px; border:0; cursor:pointer; font-weight:700; letter-spacing:.2px}
+    .btn-primary{background:linear-gradient(180deg, rgba(83,230,255,.9), rgba(43,170,210,.9)); color:#001317; box-shadow:0 10px 30px var(--brand-weak)}
+    .btn-primary:disabled{opacity:.5; cursor:not-allowed}
+    .btn-outline{background:transparent; color:var(--text); border:1.5px solid var(--ring); box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
+    .addr{margin-top:10px; display:inline-block; font-size:14px; color:var(--muted); padding:10px 14px; border:1px dashed rgba(255,255,255,.12); border-radius:12px}
+    footer{opacity:.7; font-size:12px; margin:14px 0 8px}
+    @media (max-width:560px){
+      .grid{grid-template-columns:1fr}
+      .row{flex-direction:column; align-items:stretch}
+      input.qty,.btn{width:100%}
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <section class="hero">
-        <img src="https://pob-lyart.vercel.app/og.png" alt="POB cover">
+        <figure><img src="https://pob-lyart.vercel.app/og.png" alt="POB cover" /></figure>
       </section>
+
       <section class="content">
         <h1>Proof of Build</h1>
         <div class="muted">Chain: <b style="color:#cbe9f2">Base</b></div>
-        <p class="muted" style="margin:10px 0 14px">Mint your onchain builder badge and join early Base miniapp creators.</p>
+
+        <p class="muted" style="margin:10px 0 14px">
+          Proof of Build is a Base-native collectible for early miniapp creators and supporters.
+          Mint as many as you want, keep it as your onchain builder badge.
+        </p>
 
         <div class="grid">
-          <div class="muted">Minted: <b id="minted">0</b></div>
-          <div class="muted">Price: <b>0.0001 ETH</b></div>
+          <div class="stat">Minted: <b id="minted">0 / 10,000 (0.00%)</b></div>
+          <div class="stat">Price: <b>0.0001 ETH</b></div>
         </div>
 
         <div class="grid" style="margin-top:0">
-          <div class="muted">You hold: <b id="youHold">0 POB</b></div>
-          <div class="muted">Contract: <a id="addr" class="muted" target="_blank" rel="noopener">0x01b9...6386C</a></div>
+          <div class="stat">You hold: <b id="youHold">0 POB</b></div>
+          <div class="stat">Contract: <a id="addr" class="muted" target="_blank" rel="noopener">0x01b9...6386C</a></div>
         </div>
 
         <div class="row">
@@ -71,33 +112,170 @@
         </div>
 
         <span class="addr" id="acct">Wallet: not connected</span>
+
+        <footer class="muted">
+          If you cast this link on Warpcast and the preview doesn’t show, make sure there is
+          <b>no extra space or newline after the URL</b> in your cast.
+        </footer>
       </section>
     </div>
   </div>
 
+  <!-- ethers v6 untuk provider & tx -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.min.js" defer></script>
   <script>
-    // Konstanta dasar
-    const CONTRACT = "0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C";
-    const BASESCAN = "https://basescan.org/address/" + CONTRACT;
-    document.getElementById('addr').href = BASESCAN;
+  window.addEventListener('load', () => {
+    (async function main(){
+      // Konstanta
+      const CONTRACT = "0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C";
+      const BASE_CHAIN_ID_HEX = "0x2105"; // 8453
+      const TOKEN_ID = 0;
+      const PRICE_ETH = "0.0001";
 
-    // Wallet connect sederhana
-    const acctEl = document.getElementById('acct');
-    const connectBtn = document.getElementById('connectBtn');
+      // Elemen UI
+      const addrLink = document.getElementById('addr');
+      const acctEl   = document.getElementById('acct');
+      const youHold  = document.getElementById('youHold');
+      const mintedEl = document.getElementById('minted');
+      const connectBtn = document.getElementById('connectBtn');
+      const mintBtn  = document.getElementById('mintBtn');
+      const qtyInput = document.getElementById('qty');
 
-    async function connectWallet(){
-      if(!window.ethereum){ alert("Install a wallet (Coinbase / MetaMask / Rabby)."); return; }
-      const [acc] = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      acctEl.textContent = "Wallet: " + acc.slice(0,6)+"…"+acc.slice(-4);
-      connectBtn.textContent = "Wallet connected";
-    }
-    connectBtn.addEventListener('click', connectWallet);
+      // set link basescan
+      addrLink.href = "https://basescan.org/address/" + CONTRACT;
 
-    // Placeholder mint (panggil logic mint kamu di sini)
-    document.getElementById('mintBtn').addEventListener('click', async () => {
-      if(!window.ethereum){ alert("Connect your wallet first."); return; }
-      alert("Mint button clicked. Plug your onchain mint function here.");
-    });
+      // ABI minimum (fungsi yang kita pakai)
+      const ABI = [
+        // read
+        {"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"id","type":"uint256"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+        {"inputs":[{"internalType":"uint256","name":"","type":"uint256"}],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+        {"inputs":[],"name":"nextTokenIdToMint","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+        // write: claim(receiver, tokenId, qty, currency, pricePerToken, allowlistProof, data)
+        {"inputs":[
+          {"internalType":"address","name":"_receiver","type":"address"},
+          {"internalType":"uint256","name":"_tokenId","type":"uint256"},
+          {"internalType":"uint256","name":"_quantity","type":"uint256"},
+          {"internalType":"address","name":"_currency","type":"address"},
+          {"internalType":"uint256","name":"_pricePerToken","type":"uint256"},
+          {"components":[
+            {"internalType":"bytes32[]","name":"proof","type":"bytes32[]"},
+            {"internalType":"uint256","name":"quantityLimitPerWallet","type":"uint256"},
+            {"internalType":"uint256","name":"pricePerToken","type":"uint256"},
+            {"internalType":"address","name":"currency","type":"address"}
+          ],"internalType":"struct IDrop1155.AllowlistProof","name":"_allowlistProof","type":"tuple"},
+          {"internalType":"bytes","name":"_data","type":"bytes"}
+        ],"name":"claim","outputs":[],"stateMutability":"payable","type":"function"}
+      ];
+
+      // Helpers
+      const hasEth = () => typeof window !== 'undefined' && window.ethereum;
+
+      async function ensureBaseChain(provider){
+        const chainId = await provider.send('eth_chainId', []);
+        if (chainId !== BASE_CHAIN_ID_HEX){
+          try {
+            await provider.send('wallet_switchEthereumChain', [{ chainId: BASE_CHAIN_ID_HEX }]);
+          } catch (err){
+            // kalau chain belum ada di wallet
+            if (err && err.code === 4902){
+              await provider.send('wallet_addEthereumChain', [{
+                chainId: BASE_CHAIN_ID_HEX,
+                chainName: 'Base',
+                nativeCurrency: { name:'Ether', symbol:'ETH', decimals:18 },
+                rpcUrls: ['https://mainnet.base.org'],
+                blockExplorerUrls: ['https://basescan.org']
+              }]);
+            } else {
+              throw err;
+            }
+          }
+        }
+      }
+
+      async function connect(){
+        if(!hasEth()){ alert("Install/aktifkan wallet (Coinbase Wallet / Rabby / MetaMask)."); return null; }
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        await provider.send('eth_requestAccounts', []);
+        await ensureBaseChain(provider);
+        const signer = await provider.getSigner();
+        const addr = await signer.getAddress();
+        acctEl.textContent = "Wallet: " + addr.slice(0,6) + "…" + addr.slice(-4);
+        connectBtn.textContent = "Wallet connected";
+        return { provider, signer, addr };
+      }
+
+      async function refreshNumbers(signerAddr){
+        try{
+          if(!hasEth()) return;
+          const provider = new ethers.BrowserProvider(window.ethereum);
+          const contract = new ethers.Contract(CONTRACT, ABI, provider);
+          // minted = totalSupply(0); (Drop1155 menyimpan totalSupply per tokenId)
+          const minted = await contract.totalSupply(TOKEN_ID);
+          const mintedNum = Number(minted);
+          const pct = (mintedNum/10000*100).toFixed(2);
+          mintedEl.textContent = `${mintedNum.toLocaleString()} / 10,000 (${pct}%)`;
+          if (signerAddr){
+            const bal = await contract.balanceOf(signerAddr, TOKEN_ID);
+            youHold.textContent = `${Number(bal)} POB`;
+          }
+        }catch(e){ /* silent */ }
+      }
+
+      // Wire up buttons
+      connectBtn.addEventListener('click', async () => {
+        const ses = await connect();
+        if (ses) refreshNumbers(ses.addr);
+      });
+
+      mintBtn.addEventListener('click', async () => {
+        try{
+          const ses = await connect(); // juga memastikan sudah di chain Base
+          if(!ses) return;
+          const { signer, addr } = ses;
+
+          const qty = Math.max(1, parseInt(qtyInput.value || "1", 10));
+          const priceWei = ethers.parseEther(PRICE_ETH);
+          const totalValue = priceWei * BigInt(qty);
+
+          const contract = new ethers.Contract(CONTRACT, ABI, signer);
+          const ZERO = "0x0000000000000000000000000000000000000000";
+
+          // AllowlistProof kosong (public sale)
+          const proof = {
+            proof: [],
+            quantityLimitPerWallet: ethers.MaxUint256,
+            pricePerToken: priceWei,
+            currency: ZERO
+          };
+
+          mintBtn.disabled = true; mintBtn.textContent = "Minting…";
+
+          const tx = await contract.claim(
+            addr,                // _receiver
+            TOKEN_ID,            // _tokenId
+            qty,                 // _quantity
+            ZERO,                // _currency (ETH)
+            priceWei,            // _pricePerToken
+            proof,               // _allowlistProof
+            "0x",                // _data
+            { value: totalValue } // kirim ETH
+          );
+          await tx.wait();
+
+          mintBtn.textContent = "Minted!";
+          await refreshNumbers(addr);
+          setTimeout(()=>{ mintBtn.textContent = "Mint POB"; mintBtn.disabled=false; }, 1200);
+        }catch(err){
+          console.error(err);
+          alert((err && (err.shortMessage || err.message)) || "Mint failed");
+          mintBtn.disabled=false; mintBtn.textContent="Mint POB";
+        }
+      });
+
+      // auto refresh angka saat load
+      refreshNumbers(null);
+    })();
+  });
   </script>
 </body>
 </html>
