@@ -1,0 +1,19 @@
+{
+  "headers": [
+    {
+      "source": "/frame",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    },
+    {
+      "source": "/frame.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
+  ],
+  "rewrites": [
+    { "source": "/frame", "destination": "/frame.html" }
+  ]
+}
