@@ -9,7 +9,7 @@
     content="Proof of Build — a Base-native collectible for early miniapp creators and supporters."
   />
 
-  <!-- Open Graph -->
+  <!-- Open Graph (ganti URL kalau beda) -->
   <meta property="og:title" content="Proof of Build" />
   <meta
     property="og:description"
@@ -19,32 +19,7 @@
   <meta property="og:url" content="https://pob-lyart.vercel.app" />
   <meta property="og:type" content="website" />
 
-  <!-- Farcaster Frame (optional, if you add API later) -->
-  <meta property="fc:frame" content="vNext" />
-  <meta
-    property="fc:frame:post_url"
-    content="https://pob-lyart.vercel.app/api/webhook"
-  />
-
-  <!-- Farcaster MiniApp -->
-  <meta
-    name="fc:miniapp"
-    content='{
-      "version":"1",
-      "imageUrl":"https://pob-lyart.vercel.app/icon.png",
-      "button":{
-        "title":"Mint Proof of Build",
-        "action":{
-          "type":"launch_miniapp",
-          "name":"Proof of Build",
-          "url":"https://pob-lyart.vercel.app",
-          "splashImageUrl":"https://pob-lyart.vercel.app/og.png",
-          "splashBackgroundColor":"#020617"
-        }
-      }
-    }'
-  />
-
+  <!-- Miniapp icon -->
   <link rel="icon" type="image/png" href="https://pob-lyart.vercel.app/icon.png" />
 
   <style>
@@ -53,178 +28,115 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
         sans-serif;
     }
-
     body {
       margin: 0;
       min-height: 100vh;
-      background: radial-gradient(circle at top, #020617, #020617 75%);
+      background: #020617;
       color: #e5e7eb;
       display: flex;
       justify-content: center;
     }
-
     main {
       width: 100%;
-      max-width: 720px;
-      padding: 20px 14px 32px;
+      max-width: 480px;
+      background: #050816;
+      min-height: 100vh;
     }
 
-    a {
-      color: #60a5fa;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .card {
-      background: #020617;
-      border-radius: 18px;
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      padding: 16px 16px 18px;
-      margin-bottom: 14px;
-      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.85);
-    }
-
-    .header-row {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .badge-live {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      padding: 3px 9px;
-      border-radius: 999px;
-      background: rgba(21, 128, 61, 0.16);
-      color: #bbf7d0;
-      margin-bottom: 6px;
-    }
-    .dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: radial-gradient(circle, #22c55e, #16a34a);
-      box-shadow: 0 0 8px #22c55e;
-    }
-
-    .icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 18px;
-      border: 1px solid rgba(148, 163, 184, 0.5);
+    /* HERO */
+    .hero-img {
+      width: 100%;
+      aspect-ratio: 16 / 10;
       object-fit: cover;
-      background: #020617;
+      border-bottom: 1px solid rgba(15, 23, 42, 0.9);
+    }
+
+    .container {
+      padding: 16px 14px 24px;
     }
 
     h1 {
-      margin: 0;
+      margin: 4px 0 2px;
       font-size: 22px;
       color: #f9fafb;
     }
 
-    .subtitle {
-      margin: 4px 0 0;
+    .chain {
       font-size: 13px;
       color: #9ca3af;
+      margin-bottom: 8px;
     }
 
-    .pill-row {
+    .desc {
+      font-size: 13px;
+      color: #cbd5f5;
+      margin: 6px 0 12px;
+      line-height: 1.5;
+    }
+
+    .stat-row {
       display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-      font-size: 11px;
-    }
-
-    .pill {
-      padding: 3px 9px;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      color: #9ca3af;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      margin-top: 4px;
     }
 
     .label {
-      font-size: 12px;
       color: #9ca3af;
+      font-size: 12px;
     }
-
     .value {
-      font-size: 13px;
       color: #e5e7eb;
       font-weight: 600;
-      margin-top: 1px;
+      font-size: 13px;
     }
-
     .mono {
       font-family: "JetBrains Mono", "Fira Code", monospace;
       font-size: 12px;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-top: 10px;
-      font-size: 13px;
+    .divider {
+      margin: 16px 0 14px;
+      border: none;
+      border-top: 1px solid rgba(15, 23, 42, 0.85);
     }
 
-    @media (max-width: 600px) {
-      .header-row {
-        align-items: flex-start;
-      }
-      .grid {
-        grid-template-columns: minmax(0, 1fr);
-      }
-    }
-
-    .mint-title {
-      font-size: 16px;
-      font-weight: 600;
-      margin: 0 0 6px;
-      color: #e5e7eb;
-    }
-
-    .muted {
-      font-size: 13px;
+    /* INPUT + BUTTON */
+    .qty-label {
+      font-size: 12px;
       color: #9ca3af;
-      margin: 0 0 8px;
+      margin-bottom: 4px;
     }
 
-    .mint-row {
+    .qty-row {
       display: flex;
       gap: 10px;
-      margin-top: 8px;
       align-items: center;
-      flex-wrap: wrap;
+      margin-bottom: 10px;
     }
 
-    .input-wrap {
-      flex: 1 1 140px;
+    .qty-input-wrap {
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 8px 12px;
       border-radius: 999px;
       border: 1px solid rgba(55, 65, 81, 0.9);
       background: #020617;
-      padding: 8px 12px;
-      min-width: 0;
     }
 
-    .input-wrap input {
+    #qtyInput {
       border: none;
       outline: none;
       background: transparent;
       color: #e5e7eb;
       font-size: 15px;
-      width: 60px;
+      width: 70px;
     }
 
-    .input-wrap span {
+    .qty-unit {
       font-size: 13px;
       color: #9ca3af;
       margin-left: 4px;
@@ -233,46 +145,46 @@
     button {
       border: none;
       border-radius: 999px;
-      padding: 10px 18px;
-      font-size: 14px;
-      font-weight: 600;
       cursor: pointer;
+      font-weight: 600;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
     }
 
     #connectBtn {
-      background: rgba(37, 99, 235, 0.12);
-      border: 1px solid rgba(59, 130, 246, 0.9);
-      color: #bfdbfe;
-      padding: 8px 14px;
-      font-size: 13px;
+      width: 100%;
+      padding: 10px 16px;
+      margin-top: 8px;
+      font-size: 14px;
+      background: #facc15;
+      color: #020617;
     }
 
     #mintBtn {
+      flex: 1;
+      padding: 10px 16px;
+      font-size: 14px;
       background: linear-gradient(135deg, #38bdf8, #2563eb);
       color: #eff6ff;
-      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.7);
-      min-width: 120px;
+      box-shadow: 0 12px 32px rgba(37, 99, 235, 0.8);
     }
     #mintBtn:disabled {
       opacity: 0.7;
-      cursor: default;
       box-shadow: none;
+      cursor: default;
     }
 
     .estimate {
-      margin-top: 6px;
       font-size: 12px;
       color: #9ca3af;
+      margin-top: 4px;
     }
 
     .status {
       margin-top: 6px;
-      font-size: 12px;
       min-height: 16px;
+      font-size: 12px;
     }
     .status.ok {
       color: #4ade80;
@@ -281,97 +193,77 @@
       color: #f97373;
     }
 
-    .progress {
-      width: 100%;
-      height: 6px;
-      border-radius: 999px;
-      background: #020617;
-      border: 1px solid rgba(55, 65, 81, 0.9);
-      overflow: hidden;
-      margin-top: 8px;
-    }
-    .progress-fill {
-      height: 100%;
-      width: 0%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #22c55e, #38bdf8);
-      box-shadow: 0 0 18px rgba(34, 197, 94, 0.7);
-      transition: width 0.4s ease-out;
-    }
-
-    footer {
-      margin-top: 12px;
-      text-align: center;
+    .fine-print {
+      margin-top: 14px;
       font-size: 11px;
       color: #6b7280;
+      line-height: 1.5;
+    }
+
+    .link {
+      color: #60a5fa;
+      text-decoration: none;
+    }
+    .link:hover {
+      text-decoration: underline;
     }
   </style>
 
-  <!-- ethers.js v6 -->
+  <!-- ethers.js -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
 </head>
 <body>
 <main>
-  <!-- TOP CARD -->
-  <section class="card">
-    <div class="badge-live">
-      <span class="dot"></span>
-      Live on Base · Mint for 0.0001 ETH
-    </div>
+  <!-- HERO IMAGE (pakai gambar NFT kamu) -->
+  <img
+    src="https://pob-lyart.vercel.app/og.png"
+    alt="Proof of Build"
+    class="hero-img"
+  />
 
-    <div class="header-row">
-      <img src="https://pob-lyart.vercel.app/icon.png" class="icon" alt="POB" />
+  <div class="container">
+    <h1>Proof of Build</h1>
+    <div class="chain">Chain: <strong>Base</strong></div>
+
+    <p class="desc">
+      Proof of Build is a Base-native collectible for early miniapp creators
+      and supporters. Mint as many as you want, keep it as your onchain
+      builder badge.
+    </p>
+
+    <div class="stat-row">
       <div>
-        <h1>Proof of Build</h1>
-        <p class="subtitle">
-          A Base-native collectible for early miniapp creators and supporters.
-          Mint once or mint many — keep it as your onchain builder badge.
-        </p>
+        <div class="label">Minted</div>
+        <div class="value" id="mintedText">0 / ∞</div>
+      </div>
+      <div style="text-align:right;">
+        <div class="label">Price</div>
+        <div class="value" id="priceText">0.0001 ETH</div>
       </div>
     </div>
 
-    <div class="grid">
+    <div class="stat-row" style="margin-top:8px;">
       <div>
+        <div class="label">You hold</div>
+        <div class="value" id="youHoldText">0 POB</div>
+      </div>
+      <div style="text-align:right;">
         <div class="label">Contract</div>
         <div class="value mono">
           <a
+            class="link"
             href="https://basescan.org/address/0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C"
             target="_blank"
           >0x01b9...6386C</a>
         </div>
       </div>
-      <div>
-        <div class="label">Network</div>
-        <div class="value">Base Mainnet (8453)</div>
-      </div>
-      <div>
-        <div class="label">Price</div>
-        <div class="value" id="priceText">0.0001 ETH per NFT</div>
-      </div>
-      <div>
-        <div class="label">Max per wallet</div>
-        <div class="value" id="perWalletText">Loading…</div>
-      </div>
     </div>
 
-    <div style="margin-top: 10px; display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap;">
-      <button id="connectBtn">Connect wallet</button>
-      <div class="label" style="flex:1; text-align:right;">
-        <span id="youHoldText">You hold: 0 POB</span>
-      </div>
-    </div>
-  </section>
+    <hr class="divider" />
 
-  <!-- MINT CARD -->
-  <section class="card">
-    <p class="mint-title">Mint your Proof of Build</p>
-    <p class="muted">
-      Choose how many you want to mint. You’ll receive
-      <span class="mono">Proof of Build</span> directly to your address on Base.
-    </p>
-
-    <div class="mint-row">
-      <div class="input-wrap">
+    <div class="qty-label">Quantity</div>
+    <div class="qty-row">
+      <div class="qty-input-wrap">
         <input
           id="qtyInput"
           type="number"
@@ -380,57 +272,36 @@
           value="1"
           inputmode="numeric"
         />
-        <span>NFT</span>
+        <span class="qty-unit">NFT</span>
       </div>
       <button id="mintBtn">Mint POB</button>
     </div>
 
-    <div class="estimate" id="estimateText">Estimated: 1 POB · 0.0001 ETH</div>
+    <div class="estimate" id="estimateText">
+      Estimated: 1 POB · 0.0001 ETH
+    </div>
+
     <div class="status" id="mintStatus"></div>
-  </section>
 
-  <!-- STATS CARD -->
-  <section class="card">
-    <p class="mint-title">Mint stats</p>
-    <p class="muted">On-chain stats for the Proof of Build drop.</p>
+    <button id="connectBtn">Connect wallet</button>
 
-    <div class="progress">
-      <div id="progressFill" class="progress-fill"></div>
-    </div>
-    <div class="estimate" id="supplyText">
-      Minted: loading…
-    </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section class="card">
-    <p class="mint-title">About this drop</p>
-    <p class="muted">
-      Proof of Build is a simple onchain memento for people who experiment with
-      Base miniapps early. Mint is set to <span class="mono">0.0001 ETH</span>,
-      with a fixed supply configured on-chain via thirdweb.
+    <p class="fine-print">
+      If you cast this link on Warpcast and the preview doesn’t show, make sure
+      there is <strong>no extra space or newline after the URL</strong> in your
+      cast.
     </p>
-    <p class="muted" style="margin-top:6px;">
-      If you share this link on Warpcast and the preview card doesn’t show,
-      make sure there is <strong>no extra space/newline after the URL</strong>
-      in your cast.
-    </p>
-  </section>
-
-  <footer>
-    Proof of Build · Base Miniapp · 2025
-  </footer>
+  </div>
 </main>
 
 <script>
-  // --- CONFIG ---
+  // ===== CONFIG =====
   const CONTRACT_ADDRESS = "0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C";
-  const TOKEN_ID = 0n;          // ERC1155 token id
-  const CHAIN_ID = 8453;        // Base mainnet
+  const TOKEN_ID = 0n;           // ERC1155 token id
+  const CHAIN_ID = 8453;         // Base mainnet
   const CHAIN_ID_HEX = "0x2105"; // 8453 in hex
   const RPC_URL = "https://mainnet.base.org";
 
-  // minimal ABI (read + claim)
+  // Minimal ABI
   const ABI = [
     "function totalSupply(uint256) view returns (uint256)",
     "function maxTotalSupply(uint256) view returns (uint256)",
@@ -440,32 +311,28 @@
     "function claim(address _receiver,uint256 _tokenId,uint256 _quantity,address _currency,uint256 _pricePerToken,(bytes32[] proof,uint256 quantityLimitPerWallet,uint256 pricePerToken,address currency) _allowlistProof,bytes _data) payable"
   ];
 
-  // --- DOM ---
-  const connectBtn = document.getElementById("connectBtn");
-  const qtyInput = document.getElementById("qtyInput");
-  const mintBtn = document.getElementById("mintBtn");
-  const mintStatus = document.getElementById("mintStatus");
-  const estimateText = document.getElementById("estimateText");
+  // DOM elements
+  const mintedText = document.getElementById("mintedText");
   const priceText = document.getElementById("priceText");
-  const perWalletText = document.getElementById("perWalletText");
   const youHoldText = document.getElementById("youHoldText");
-  const supplyText = document.getElementById("supplyText");
-  const progressFill = document.getElementById("progressFill");
+  const qtyInput = document.getElementById("qtyInput");
+  const estimateText = document.getElementById("estimateText");
+  const mintBtn = document.getElementById("mintBtn");
+  const connectBtn = document.getElementById("connectBtn");
+  const mintStatus = document.getElementById("mintStatus");
 
-  // --- STATE ---
+  // State
   let readProvider;
   let readContract;
-  let currentAccount = null;
   let currentPriceWei = null;
-  let currentCurrency = null; // address
-  let maxPerWallet = null;
+  let currentCurrency = null;
+  let currentAccount = null;
 
   function setStatus(msg, ok) {
     mintStatus.textContent = msg || "";
     mintStatus.className = "status " + (msg ? (ok ? "ok" : "err") : "");
   }
 
-  // read-only provider
   function getReadContract() {
     if (!readProvider) {
       readProvider = new ethers.JsonRpcProvider(RPC_URL);
@@ -477,7 +344,6 @@
   async function loadOnchainInfo() {
     try {
       const c = getReadContract();
-
       const [totalSupplyBN, maxTotalSupplyBN, conditionIdBN] = await Promise.all([
         c.totalSupply(TOKEN_ID),
         c.maxTotalSupply(TOKEN_ID),
@@ -489,42 +355,33 @@
       const totalSupply = Number(totalSupplyBN);
       let maxSupply = Number(maxTotalSupplyBN);
       if (!maxSupply || maxSupply === 0) {
-        // fallback to claim condition if maxTotalSupply is 0
         maxSupply = Number(condition.maxClaimableSupply);
       }
 
       currentPriceWei = condition.pricePerToken;
       currentCurrency = condition.currency;
-      maxPerWallet = Number(condition.quantityLimitPerWallet);
 
       const priceEth = Number(ethers.formatEther(currentPriceWei));
-      priceText.textContent = priceEth.toFixed(4) + " ETH per NFT";
+      priceText.textContent = priceEth.toFixed(4) + " ETH";
 
-      if (!maxPerWallet || maxPerWallet === 0 || maxPerWallet > 1000000000) {
-        perWalletText.textContent = "Unlimited (contract-level)";
+      if (maxSupply && maxSupply > 0) {
+        const pct = (totalSupply / maxSupply) * 100;
+        mintedText.textContent =
+          totalSupply.toLocaleString() +
+          " / " +
+          maxSupply.toLocaleString() +
+          " (" +
+          pct.toFixed(2) +
+          "%)";
       } else {
-        perWalletText.textContent = maxPerWallet + " per wallet";
+        mintedText.textContent = totalSupply.toLocaleString() + " / ∞";
       }
-
-      // progress
-      const pct = maxSupply > 0 ? (totalSupply / maxSupply) * 100 : 0;
-      progressFill.style.width = Math.min(pct, 100).toFixed(2) + "%";
-
-      supplyText.textContent =
-        "Minted: " +
-        totalSupply.toLocaleString() +
-        " / " +
-        (maxSupply > 0 ? maxSupply.toLocaleString() : "∞") +
-        " POB" +
-        (maxSupply > 0
-          ? " (" + pct.toFixed(2) + "%)"
-          : "");
 
       updateEstimate();
     } catch (err) {
       console.error("loadOnchainInfo error", err);
-      supplyText.textContent = "Minted: data unavailable";
-      priceText.textContent = "Price: data unavailable";
+      mintedText.textContent = "data unavailable";
+      priceText.textContent = "–";
     }
   }
 
@@ -538,11 +395,22 @@
       estimateText.textContent = "Estimated: –";
       return;
     }
-
     const totalWei = currentPriceWei * BigInt(qty);
     const totalEth = Number(ethers.formatEther(totalWei));
     estimateText.textContent =
       "Estimated: " + qty + " POB · " + totalEth.toFixed(4) + " ETH";
+  }
+
+  async function refreshBalance() {
+    if (!currentAccount) return;
+    try {
+      const c = getReadContract();
+      const balBN = await c.balanceOf(currentAccount, TOKEN_ID);
+      const bal = Number(balBN);
+      youHoldText.textContent = bal.toLocaleString() + " POB";
+    } catch (err) {
+      console.error("balance error", err);
+    }
   }
 
   async function connectWallet() {
@@ -556,7 +424,6 @@
       });
       if (!accounts || !accounts.length) return;
 
-      // ensure Base
       const chainIdHex = await window.ethereum.request({
         method: "eth_chainId"
       });
@@ -569,10 +436,6 @@
       }
 
       currentAccount = accounts[0];
-      const short =
-        currentAccount.slice(0, 6) + "..." + currentAccount.slice(-4);
-      connectBtn.textContent = short;
-
       await refreshBalance();
       setStatus("", true);
     } catch (err) {
@@ -581,21 +444,9 @@
     }
   }
 
-  async function refreshBalance() {
-    if (!currentAccount) return;
-    try {
-      const c = getReadContract();
-      const balBN = await c.balanceOf(currentAccount, TOKEN_ID);
-      const bal = Number(balBN);
-      youHoldText.textContent = "You hold: " + bal.toLocaleString() + " POB";
-    } catch (err) {
-      console.error("balance error", err);
-    }
-  }
-
   async function handleMint() {
     if (!window.ethereum) {
-      alert("No wallet detected. Open this in Base Wallet or MetaMask.");
+      alert("No wallet detected. Open this page in Base Wallet or MetaMask.");
       return;
     }
     let qty = parseInt(qtyInput.value || "0", 10);
@@ -603,7 +454,6 @@
       setStatus("Enter a quantity greater than 0.", false);
       return;
     }
-
     if (!currentPriceWei || !currentCurrency) {
       setStatus("Price data not loaded yet. Please wait a moment.", false);
       return;
@@ -626,11 +476,7 @@
       const account = await signer.getAddress();
       currentAccount = account;
 
-      const contract = new ethers.Contract(
-        CONTRACT_ADDRESS,
-        ABI,
-        signer
-      );
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
 
       const allowlistProof = {
         proof: [],
@@ -654,8 +500,8 @@
 
       setStatus("Minting… waiting for confirmation on-chain.", true);
       await tx.wait();
-      setStatus("Mint successful! Your Proof of Build is on-chain.", true);
 
+      setStatus("Mint successful! Your Proof of Build is on-chain.", true);
       await Promise.all([loadOnchainInfo(), refreshBalance()]);
     } catch (err) {
       console.error("mint error", err);
@@ -669,19 +515,17 @@
     }
   }
 
-  // --- EVENT BINDINGS ---
-  connectBtn.addEventListener("click", connectWallet);
-  mintBtn.addEventListener("click", handleMint);
+  // Events
   qtyInput.addEventListener("input", () => {
     if (qtyInput.value === "") return updateEstimate();
     const n = parseInt(qtyInput.value, 10);
-    if (!Number.isFinite(n) || n <= 0) {
-      qtyInput.value = "1";
-    }
+    if (!Number.isFinite(n) || n <= 0) qtyInput.value = "1";
     updateEstimate();
   });
+  connectBtn.addEventListener("click", connectWallet);
+  mintBtn.addEventListener("click", handleMint);
 
-  // --- INITIAL LOAD ---
+  // Init
   loadOnchainInfo();
 </script>
 </body>
