@@ -6,13 +6,13 @@
   },
   "frame": {
     "version": "1",
-    "name": "Proof of Build",
+    "name": "Example Frame",
     "iconUrl": "https://pob-lyart.vercel.app/icon.png",
     "homeUrl": "https://pob-lyart.vercel.app",
     "imageUrl": "https://pob-lyart.vercel.app/image.png",
-    "buttonTitle": "Mint POB",
+    "buttonTitle": "Check this out",
     "splashImageUrl": "https://pob-lyart.vercel.app/splash.png",
     "splashBackgroundColor": "#eeccff",
-    "webhookUrl": ""
+    "webhookUrl": "https://pob-lyart.vercel.app/api/webhook"
   }
 }
