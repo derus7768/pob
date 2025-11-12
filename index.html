@@ -1,48 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Proof of Build</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Proof of Build — Base-native builder badge. Mint with ETH on Base." />
 
-  <meta name="description" content="Proof of Build is a Base-native collectible for early miniapp creators and supporters. Mint your onchain builder badge.">
-
-  <!-- OG & Miniapp -->
+  <!-- Social / Miniapp preview -->
   <meta property="og:title" content="Proof of Build" />
-  <meta property="og:description" content="Base-native collectible for builders." />
+  <meta property="og:description" content="Mint your onchain builder badge on Base." />
   <meta property="og:image" content="https://pob-lyart.vercel.app/og.png" />
   <meta name="fc:miniapp"
-    content='{"version":"1","imageUrl":"https://pob-lyart.vercel.app/og.png","button":{"title":"Mint POB","action":{"type":"launch_miniapp","name":"Proof of Build","url":"https://pob-lyart.vercel.app","splashImageUrl":"https://pob-lyart.vercel.app/icon.png","splashBackgroundColor":"#0d1117"}}}' />
+        content='{"version":"1","imageUrl":"https://pob-lyart.vercel.app/og.png","button":{"title":"Mint POB","action":{"type":"launch_miniapp","name":"Proof of Build","url":"https://pob-lyart.vercel.app","splashImageUrl":"https://pob-lyart.vercel.app/icon.png","splashBackgroundColor":"#0d1117"}}}' />
+  <link rel="icon" href="icon.png" />
 
-  <link rel="icon" href="icon.png">
   <style>
-    body {
-      margin:0;background:#0b0f13;color:#e6edf3;font-family:Inter,system-ui,sans-serif;
-      display:flex;justify-content:center;align-items:center;min-height:100vh
+    :root{
+      --bg:#0b0f13; --panel:#0f141a; --text:#e6edf3; --muted:#8ea0ae;
+      --brand:#53e6ff; --ring:#224957; --rad:14px;
     }
-    .wrap {width:90%;max-width:420px;background:#0f141a;border:1px solid #222;border-radius:14px;padding:22px;text-align:center}
-    img {width:100%;border-radius:12px;box-shadow:0 0 40px rgba(0,255,255,.05)}
-    h1 {margin:14px 0;font-size:24px}
-    .muted {color:#8ea0ae;font-size:14px}
-    input,button {width:100%;height:48px;border-radius:12px;border:none;font-size:16px}
-    input {padding:0 12px;background:#12191f;color:#e6edf3;border:1px solid #222;margin-top:14px}
-    .btn-primary {background:linear-gradient(180deg,#53e6ff,#1fbfd9);color:#001319;font-weight:700;margin-top:12px;cursor:pointer}
-    .btn-outline {margin-top:10px;background:none;border:1px solid #2a3a44;color:#d8e3eb;cursor:pointer}
-    .addr {display:block;margin-top:8px;font-size:13px;color:#9db1bb}
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+         background:#0b0f13;color:var(--text);font:500 16px/1.5 Inter,system-ui,sans-serif}
+    .wrap{width:min(460px,92vw);background:var(--panel);border:1px solid #1e2a33;border-radius:18px;padding:20px}
+    .hero{border-radius:12px;overflow:hidden;box-shadow:0 0 40px rgba(83,230,255,.08)}
+    .hero img{width:100%;display:block}
+    h1{margin:14px 0 4px;font-size:26px}
+    .muted{color:var(--muted);font-size:14px}
+    .row{margin-top:12px;display:flex;gap:10px}
+    input,button{height:48px;border:none;border-radius:var(--rad);font-size:16px}
+    input{flex:1;background:#12191f;color:var(--text);padding:0 12px;border:1px solid #20303a}
+    .btn{flex:1;cursor:pointer}
+    .primary{background:linear-gradient(180deg,#53e6ff,#1fbfd9);color:#02222b;font-weight:700}
+    .ghost{background:transparent;color:var(--text);border:1px solid var(--ring)}
+    .addr{margin-top:8px;font-size:13px;color:var(--muted)}
+    .help{margin-top:10px;font-size:13px}
+    .help a{color:#7bdaf0;text-decoration:none}
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <img src="og.png" alt="POB">
+    <div class="hero"><img src="og.png" alt="POB"></div>
     <h1>Proof of Build</h1>
-    <p class="muted">Mint your onchain builder badge and join early Base miniapp creators.</p>
+    <div class="muted">Mint your onchain builder badge and join early Base miniapp creators.</div>
 
-    <input id="qty" type="number" min="1" value="1" />
-    <button id="mintBtn" class="btn-primary">Mint POB</button>
-    <button id="connectBtn" class="btn-outline">Connect Wallet</button>
-    <span id="acct" class="addr">Wallet: not connected</span>
+    <div class="row">
+      <input id="qty" type="number" min="1" value="1" />
+    </div>
+    <div class="row">
+      <button id="mintBtn" class="btn primary">Mint POB</button>
+      <button id="connectBtn" class="btn ghost">Connect wallet</button>
+    </div>
+    <div class="addr" id="acct">Wallet: not connected</div>
+
+    <div class="help" id="noProviderHelp" style="display:none">
+      No injected wallet found in this in-app view.
+      <a href="https://pob-lyart.vercel.app" target="_blank" rel="noopener">Open in browser</a>
+      and connect MetaMask / Coinbase / Rabby, or open this link from inside your wallet’s browser.
+    </div>
   </div>
 
+  <!-- viem UMD -->
   <script src="https://unpkg.com/viem@2.21.32/dist/index.umd.js"></script>
   <script>
     const CONTRACT = '0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C';
@@ -50,71 +69,99 @@
     const PRICE_ETH = '0.0001';
     const NATIVE = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
 
-    const { createPublicClient, createWalletClient, http, parseEther, custom, getContract, chain } = viem;
+    const { createPublicClient, createWalletClient, http, parseEther, custom, getContract, chain, toHex } = viem;
     const base = chain.base;
-    const publicClient = createPublicClient({ chain: base, transport: http() });
+    const pub = createPublicClient({ chain: base, transport: http() });
 
-    let walletClient, account;
-    const mintBtn = document.getElementById('mintBtn');
-    const connectBtn = document.getElementById('connectBtn');
-    const acctEl = document.getElementById('acct');
-    const qtyEl = document.getElementById('qty');
+    // Minimal ABI: only what we call.
+    const abi = [{
+      "type":"function","name":"claim","stateMutability":"payable",
+      "inputs":[
+        {"name":"_receiver","type":"address"},
+        {"name":"_tokenId","type":"uint256"},
+        {"name":"_quantity","type":"uint256"},
+        {"name":"_currency","type":"address"},
+        {"name":"_pricePerToken","type":"uint256"},
+        {"components":[
+          {"name":"proof","type":"bytes32[]"},
+          {"name":"quantityLimitPerWallet","type":"uint256"},
+          {"name":"pricePerToken","type":"uint256"},
+          {"name":"currency","type":"address"}],
+         "name":"_allowlistProof","type":"tuple"},
+        {"name":"_data","type":"bytes"}
+      ],
+      "outputs":[]
+    }];
 
-    const abi = [/* paste full ABI JSON di sini */];
+    // Prefer a real wallet provider if multiple are injected
+    function getInjectedProvider() {
+      const eth = window.ethereum;
+      if (!eth) return null;
+      if (eth.providers && Array.isArray(eth.providers)) {
+        const pref = eth.providers.find(p => p.isCoinbaseWallet)
+                 ||  eth.providers.find(p => p.isBraveWallet && p._initialized)
+                 ||  eth.providers.find(p => p.isMetaMask && !p.isBraveWallet)
+                 ||  eth.providers[0];
+        return pref || eth;
+      }
+      return eth;
+    }
 
-    const contract = getContract({
-      address: CONTRACT,
-      abi,
-      client: { public: publicClient },
-    });
+    let provider = getInjectedProvider();
+    let wallet, account;
 
-    async function ensureBase() {
-      if (!window.ethereum) throw new Error('Wallet not found');
+    const $ = (id)=>document.getElementById(id);
+    const acctEl = $('acct');
+    const btnConnect = $('connectBtn');
+    const btnMint = $('mintBtn');
+    const qtyEl = $('qty');
+
+    if (!provider) $('noProviderHelp').style.display = 'block';
+
+    async function connectWallet(){
+      provider = getInjectedProvider();
+      if (!provider) {
+        $('noProviderHelp').style.display = 'block';
+        return;
+      }
+      // 1) request accounts first (more reliable on mobile)
+      const addrs = await provider.request({ method: 'eth_requestAccounts' }).catch(e => { throw e; });
+      account = addrs[0];
+
+      // 2) create wallet client on current provider
+      wallet = createWalletClient({ chain: base, transport: custom(provider) });
+
+      // 3) ensure chain = Base
       try {
-        await window.ethereum.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: viem.toHex(base.id) }],
-        });
+        await provider.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: toHex(base.id) }] });
       } catch (e) {
-        if (e.code === 4902) {
-          await window.ethereum.request({
+        if (e && (e.code === 4902 || (e.message||'').includes('Unrecognized chain'))) {
+          await provider.request({
             method: 'wallet_addEthereumChain',
             params: [{
-              chainId: viem.toHex(base.id),
+              chainId: toHex(base.id),
               chainName: 'Base',
               rpcUrls: ['https://mainnet.base.org'],
-              nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-              blockExplorerUrls: ['https://basescan.org'],
-            }],
+              nativeCurrency: { name:'Ether', symbol:'ETH', decimals:18 },
+              blockExplorerUrls: ['https://basescan.org']
+            }]
           });
-        } else throw e;
+        } else {
+          throw e;
+        }
       }
+
+      acctEl.textContent = 'Wallet: ' + account.slice(0,6) + '…' + account.slice(-4);
+      btnConnect.textContent = 'Wallet connected';
     }
 
-    async function connectWallet() {
-      const provider = window.ethereum;
-      if (!provider) return alert('Please install a wallet.');
-      await ensureBase();
-
-      walletClient = createWalletClient({
-        chain: base,
-        transport: custom(provider),
-      });
-      await provider.request({ method: 'eth_requestAccounts' });
-
-      const [addr] = await walletClient.requestAddresses();
-      account = addr;
-      acctEl.textContent = 'Wallet: ' + addr.slice(0,6) + '…' + addr.slice(-4);
-      connectBtn.textContent = 'Wallet connected';
-    }
-
-    async function mint() {
-      try {
-        if (!walletClient) await connectWallet();
-        const qty = BigInt(qtyEl.value || 1);
+    async function mint(){
+      try{
+        if (!wallet || !account) await connectWallet();
+        const qty = BigInt(Math.max(1, parseInt(qtyEl.value || '1', 10)));
         const priceWei = parseEther(PRICE_ETH);
 
-        const hash = await walletClient.writeContract({
+        const hash = await wallet.writeContract({
           address: CONTRACT,
           abi,
           functionName: 'claim',
@@ -128,21 +175,40 @@
             '0x'
           ],
           value: priceWei * qty,
-          account,
+          account
         });
 
-        await publicClient.waitForTransactionReceipt({ hash });
-        alert('✅ Mint success!');
-      } catch (err) {
-        let msg = err?.shortMessage || err?.message || String(err);
-        if (msg.includes('DropClaimInvalidTokenPrice'))
-          msg = 'Mint gagal: pastikan price = 0.0001 ETH dan currency = ETH di dashboard.';
+        await pub.waitForTransactionReceipt({ hash });
+        alert('✅ Mint success! Tx: ' + hash);
+      } catch (err){
+        let msg = String(err && (err.shortMessage || err.message || err));
+        if (msg.includes('DropClaimInvalidTokenPrice')) {
+          msg = 'Mint gagal: DropClaimInvalidTokenPrice. Cek di Thirdweb → Claim phase: currency = ETH (native), price = '+PRICE_ETH+' ETH, tokenId = '+Number(TOKEN_ID)+'.';
+        } else if (msg.includes('user rejected')) {
+          msg = 'Transaksi dibatalkan.';
+        } else if (!getInjectedProvider()) {
+          msg = 'Tidak ada wallet terdeteksi di webview. Buka link di browser / wallet.';
+        }
         alert(msg);
       }
     }
 
-    connectBtn.onclick = connectWallet;
-    mintBtn.onclick = mint;
+    // Events
+    btnConnect.addEventListener('click', () => {
+      connectWallet().catch(e => alert(e.message || String(e)));
+    });
+    btnMint.addEventListener('click', () => {
+      mint().catch(e => alert(e.message || String(e)));
+    });
+
+    // Update UI on account/chain change
+    if (provider){
+      provider.on?.('accountsChanged', (accs)=>{
+        account = (accs && accs[0]) || null;
+        acctEl.textContent = account ? 'Wallet: '+account.slice(0,6)+'…'+account.slice(-4) : 'Wallet: not connected';
+      });
+      provider.on?.('chainChanged', ()=>{/* no-op; we always switch to Base */});
+    }
   </script>
 </body>
 </html>
