@@ -2,243 +2,102 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Proof of Build</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Proof of Build is a Base-native collectible for early miniapp creators and supporters." />
 
-  <!-- OG & Warpcast MiniApp Metadata -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Proof of Build" />
-  <meta property="og:description" content="Mint your onchain builder badge and join early Base miniapp creators." />
+  <meta property="og:description" content="Mint your onchain builder badge." />
   <meta property="og:image" content="https://pob-lyart.vercel.app/og.png" />
-  <meta property="og:url" content="https://pob-lyart.vercel.app" />
-  <meta name="twitter:card" content="summary_large_image" />
+  <meta property="og:url" content="https://pob-lyart.vercel.app/index.html" />
+  <meta property="og:type" content="website" />
 
   <!-- Farcaster MiniApp Embed -->
-  <meta name="fc:miniapp" content='{
-    "version": "1",
-    "imageUrl": "https://pob-lyart.vercel.app/og.png",
-    "button": {
-      "title": "Mint POB",
-      "action": {
-        "type": "launch_miniapp",
-        "name": "Proof of Build",
-        "url": "https://pob-lyart.vercel.app",
-        "splashImageUrl": "https://pob-lyart.vercel.app/icon.png",
-        "splashBackgroundColor": "#0d1117"
-      }
-    }
-  }' />
+  <meta name="fc:miniapp"
+    content='{"version":"1","imageUrl":"https://pob-lyart.vercel.app/og.png","button":{"title":"Mint POB","action":{"type":"launch_miniapp","name":"Proof of Build","url":"https://pob-lyart.vercel.app/index.html","splashImageUrl":"https://pob-lyart.vercel.app/icon.png","splashBackgroundColor":"#0d1117"}}}' />
 
-  <!-- CSP fix agar Warpcast bisa buka halaman -->
-  <meta http-equiv="Content-Security-Policy"
-        content="frame-ancestors 'self' https://warpcast.com https://*.warpcast.com https://*.farcaster.xyz;">
+  <link rel="icon" type="image/png" href="https://pob-lyart.vercel.app/icon.png" />
 
   <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background-color: #0d0f13;
-      color: #d8d8d8;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-    }
-    .container {
-      max-width: 480px;
-      width: 100%;
-      background: #14181f;
-      border: 1px solid #222831;
-      border-radius: 12px;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-    }
-    .hero {
-      width: 100%;
-      border-radius: 12px;
-      margin-bottom: 16px;
-      background: #000;
-      box-shadow: 0 0 0 1px rgba(255,255,255,.06), 0 0 40px rgba(83,230,255,.15);
-    }
-    h1 { color: #f1f1f1; font-size: 1.6em; margin: 6px 0; }
-    a { color: #4ba3ff; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .mint-btn {
-      margin-top: 12px;
-      background: linear-gradient(90deg, #38bdf8, #2563eb);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      padding: 12px 16px;
-      font-size: 1em;
-      cursor: pointer;
-      width: 100%;
-    }
-    .mint-btn:disabled { background: #555; cursor: not-allowed; }
-    input {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #333;
-      background-color: #1e232c;
-      color: white;
-      text-align: center;
-      font-size: 1em;
-      margin-top: 10px;
-    }
-    .wallet-info {
-      background: #1a1f27;
-      padding: 10px;
-      border-radius: 8px;
-      margin-top: 10px;
-      font-size: 0.9em;
-      color: #aaa;
-    }
-    .status { margin-top: 10px; color: #4ba3ff; font-size: 0.95em; }
+    :root{--bg:#0a0f12;--panel:#0d1419;--text:#dfe6eb;--muted:#9fb0bb;--brand:#53e6ff;--brand-weak:rgba(83,230,255,.15);--max:880px}
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;background:#0a0f12;color:var(--text);font:500 16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial}
+    .wrap{max-width:var(--max);margin:32px auto;padding:0 16px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.06);border-radius:20px;box-shadow:0 10px 40px rgba(0,0,0,.5);overflow:hidden}
+    .hero{padding:16px;background:linear-gradient(180deg,#121a20,#0c1216);border-bottom:1px solid rgba(255,255,255,.06)}
+    .hero img{width:100%;display:block;border-radius:16px}
+    .content{padding:22px}
+    h1{margin:.2rem 0 1rem;font-weight:700;font-size:clamp(22px,3.2vw,28px)}
+    .muted{color:var(--muted)}
+    .grid{display:grid;gap:14px;grid-template-columns:1fr auto;align-items:center;margin:14px 0 16px}
+    .row{display:flex;gap:12px;align-items:center;margin:16px 0}
+    input.qty{width:140px;height:48px;border-radius:12px;background:#0b1216;border:1px solid rgba(255,255,255,.08);color:var(--text);padding:0 14px;font:600 16px/48px inherit}
+    .btn{height:48px;padding:0 22px;border-radius:14px;border:0;cursor:pointer;font-weight:700}
+    .btn-primary{background:linear-gradient(180deg,rgba(83,230,255,.9),rgba(43,170,210,.9));color:#001317;box-shadow:0 10px 30px var(--brand-weak)}
+    .btn-outline{background:transparent;color:var(--text);border:1.5px solid rgba(83,230,255,.35)}
+    .addr{margin-top:10px;display:inline-block;font-size:14px;color:var(--muted);padding:10px 14px;border:1px dashed rgba(255,255,255,.12);border-radius:12px}
+    @media (max-width:560px){.grid{grid-template-columns:1fr}.row{flex-direction:column;align-items:stretch}input.qty,.btn{width:100%}}
   </style>
 </head>
-
 <body>
-  <div class="container">
-    <img class="hero" src="https://pob-lyart.vercel.app/og.png" alt="POB cover" />
-    <h1>Proof of Build</h1>
-    <p>
-      Chain: <a href="https://basescan.org/" target="_blank" rel="noopener">Base</a><br>
-      Mint your onchain builder badge and join early Base miniapp creators.
-    </p>
+  <div class="wrap">
+    <div class="card">
+      <section class="hero">
+        <img src="https://pob-lyart.vercel.app/og.png" alt="POB cover">
+      </section>
+      <section class="content">
+        <h1>Proof of Build</h1>
+        <div class="muted">Chain: <b style="color:#cbe9f2">Base</b></div>
+        <p class="muted" style="margin:10px 0 14px">Mint your onchain builder badge and join early Base miniapp creators.</p>
 
-    <p id="minted">Minted: …</p>
-    <p>Price: 0.0001 ETH</p>
-    <p id="youHold">You hold: 0 POB</p>
-    <p>Contract: <a id="addr" href="#" target="_blank" rel="noopener">Loading…</a></p>
+        <div class="grid">
+          <div class="muted">Minted: <b id="minted">0</b></div>
+          <div class="muted">Price: <b>0.0001 ETH</b></div>
+        </div>
 
-    <input id="qty" type="number" min="1" value="1" />
-    <button id="mintBtn" class="mint-btn">Mint POB</button>
-    <button id="connectBtn" class="mint-btn" style="background:#1d4ed8;margin-top:8px;">Connect wallet</button>
+        <div class="grid" style="margin-top:0">
+          <div class="muted">You hold: <b id="youHold">0 POB</b></div>
+          <div class="muted">Contract: <a id="addr" class="muted" target="_blank" rel="noopener">0x01b9...6386C</a></div>
+        </div>
 
-    <div class="wallet-info" id="acct">Wallet: not connected</div>
-    <div class="status" id="status"></div>
+        <div class="row">
+          <input class="qty" id="qty" type="number" min="1" step="1" value="1" />
+          <button class="btn btn-primary" id="mintBtn">Mint POB</button>
+        </div>
+
+        <div class="row" style="margin-top:8px">
+          <button class="btn btn-outline" id="connectBtn">Connect wallet</button>
+        </div>
+
+        <span class="addr" id="acct">Wallet: not connected</span>
+      </section>
+    </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
   <script>
-  (async () => {
+    // Konstanta dasar
     const CONTRACT = "0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C";
-    const TOKEN_ID = 0;
-    const PRICE_ETH = "0.0001";
-    const CHAIN_ID_HEX = "0x2105"; // Base chain
-    const NATIVE = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
+    const BASESCAN = "https://basescan.org/address/" + CONTRACT;
+    document.getElementById('addr').href = BASESCAN;
 
-    const addrA = document.getElementById("addr");
-    const acctEl = document.getElementById("acct");
-    const statusEl = document.getElementById("status");
-    const youHoldEl = document.getElementById("youHold");
-    const mintedEl = document.getElementById("minted");
-    const qtyEl = document.getElementById("qty");
-    const connectBtn = document.getElementById("connectBtn");
-    const mintBtn = document.getElementById("mintBtn");
+    // Wallet connect sederhana
+    const acctEl = document.getElementById('acct');
+    const connectBtn = document.getElementById('connectBtn');
 
-    addrA.href = "https://basescan.org/address/" + CONTRACT;
-    addrA.textContent = CONTRACT.slice(0,6) + "…" + CONTRACT.slice(-4);
-
-    const ABI = [
-      {
-        "inputs":[
-          {"internalType":"address","name":"_receiver","type":"address"},
-          {"internalType":"uint256","name":"_tokenId","type":"uint256"},
-          {"internalType":"uint256","name":"_quantity","type":"uint256"},
-          {"internalType":"address","name":"_currency","type":"address"},
-          {"internalType":"uint256","name":"_pricePerToken","type":"uint256"},
-          {"components":[
-            {"internalType":"bytes32[]","name":"proof","type":"bytes32[]"},
-            {"internalType":"uint256","name":"quantityLimitPerWallet","type":"uint256"},
-            {"internalType":"uint256","name":"pricePerToken","type":"uint256"},
-            {"internalType":"address","name":"currency","type":"address"}],
-           "internalType":"struct IDrop1155.AllowlistProof","name":"_allowlistProof","type":"tuple"},
-          {"internalType":"bytes","name":"_data","type":"bytes"}
-        ],
-        "name":"claim","outputs":[],"stateMutability":"payable","type":"function"
-      },
-      {
-        "inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"id","type":"uint256"}],
-        "name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],
-        "stateMutability":"view","type":"function"
-      },
-      {
-        "inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"}],
-        "name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],
-        "stateMutability":"view","type":"function"
-      }
-    ];
-
-    let provider, signer, contract, account;
-
-    function show(msg){ statusEl.textContent = msg; }
-
-    async function ensureProvider(){
-      if(!window.ethereum) throw new Error("Wallet not found");
-      provider = new ethers.providers.Web3Provider(window.ethereum, "any");
-      await provider.send("eth_requestAccounts",[]);
-      const net = await provider.getNetwork();
-      if(net.chainId !== 8453){
-        await provider.send("wallet_switchEthereumChain", [{ chainId: CHAIN_ID_HEX }]);
-      }
-      signer = provider.getSigner();
-      account = await signer.getAddress();
-      contract = new ethers.Contract(CONTRACT, ABI, signer);
-      acctEl.textContent = "Wallet: " + account.slice(0,6) + "…" + account.slice(-4);
+    async function connectWallet(){
+      if(!window.ethereum){ alert("Install a wallet (Coinbase / MetaMask / Rabby)."); return; }
+      const [acc] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      acctEl.textContent = "Wallet: " + acc.slice(0,6)+"…"+acc.slice(-4);
+      connectBtn.textContent = "Wallet connected";
     }
+    connectBtn.addEventListener('click', connectWallet);
 
-    async function refresh(){
-      if(!contract || !account) return;
-      try{
-        const bal = await contract.balanceOf(account, TOKEN_ID);
-        youHoldEl.textContent = `${bal.toString()} POB`;
-        const ts = await contract.totalSupply(TOKEN_ID);
-        mintedEl.textContent = `Minted: ${ts.toString()}`;
-      }catch{}
-    }
-
-    connectBtn.onclick = async () => {
-      show("");
-      try{ await ensureProvider(); await refresh(); show("Wallet connected."); }
-      catch(e){ show(e.message || String(e)); }
-    };
-
-    mintBtn.onclick = async () => {
-      show("");
-      try{
-        await ensureProvider();
-        const q = Math.max(1, parseInt(qtyEl.value || "1", 10));
-        const priceWei = ethers.utils.parseEther(PRICE_ETH);
-        const totalValue = priceWei.mul(q);
-
-        const allowlist = {
-          proof: [],
-          quantityLimitPerWallet: ethers.constants.MaxUint256,
-          pricePerToken: priceWei,
-          currency: NATIVE
-        };
-
-        let tx;
-        tx = await contract.claim(account, TOKEN_ID, q, NATIVE, priceWei, allowlist, "0x", { value: totalValue });
-
-        show("Tx sent…");
-        await tx.wait();
-        show("✅ Mint success");
-        await refresh();
-      } catch (e) {
-        const msg = e?.error?.message || e?.data?.message || e?.reason || e?.message || "execution reverted";
-        show(msg);
-      }
-    };
-
-    if(window.ethereum){
-      try{ await ensureProvider(); await refresh(); }catch{}
-    }
-  })();
+    // Placeholder mint (panggil logic mint kamu di sini)
+    document.getElementById('mintBtn').addEventListener('click', async () => {
+      if(!window.ethereum){ alert("Connect your wallet first."); return; }
+      alert("Mint button clicked. Plug your onchain mint function here.");
+    });
   </script>
 </body>
 </html>
