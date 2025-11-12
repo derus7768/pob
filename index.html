@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Proof of Build • Base Miniapp Genesis</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Mint the Proof of Build NFT — a Base-native collectible for early miniapp creators and supporters."
+  />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Proof of Build" />
+  <meta
+    property="og:description"
+    content="Mint the Proof of Build NFT — a Base-native collectible for early miniapp creators and supporters."
+  />
+  <!-- Ganti ke URL og kamu sendiri nanti -->
+  <meta property="og:image" content="https://your-domain.vercel.app/og.png" />
+  <meta property="og:url" content="https://your-domain.vercel.app" />
+  <meta property="og:type" content="website" />
+
+  <!-- Farcaster MiniApp -->
+  <meta name="fc:miniapp" content='{
+    "version":"1",
+    "imageUrl":"https://your-domain.vercel.app/icon.png"
+  }' />
+
+  <!-- Favicon (icon POB>) -->
+  <link rel="icon" type="image/png" href="https://your-domain.vercel.app/icon.png" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #020617, #020617 55%, #000 100%);
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+    }
+
+    main {
+      width: 100%;
+      max-width: 800px;
+      padding: 20px 14px 40px;
+    }
+
+    a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: 18px;
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      padding: 18px 18px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(22px);
+    }
+
+    .hero-header {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .hero-logo {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: radial-gradient(circle, #0ea5e9 0, #0369a1 45%, #020617 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      color: #e0f2fe;
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.7);
+    }
+
+    h1 {
+      margin: 0 0 4px;
+      font-size: 24px;
+      color: #f9fafb;
+    }
+
+    .sub {
+      font-size: 13px;
+      color: #9ca3af;
+      margin: 0;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: rgba(37, 99, 235, 0.16);
+      color: #bfdbfe;
+      font-size: 11px;
+      margin-bottom: 8px;
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: radial-gradient(circle, #22c55e, #15803d);
+      box-shadow: 0 0 10px #22c55e;
+    }
+
+    .row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+      font-size: 13px;
+    }
+    .row > div {
+      flex: 1 1 150px;
+    }
+
+    .label {
+      font-size: 12px;
+      color: #9ca3af;
+    }
+    .value {
+      font-size: 13px;
+      color: #e5e7eb;
+      margin-top: 2px;
+      font-weight: 600;
+    }
+
+    .mono {
+      font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular,
+        Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+    }
+
+    button {
+      border-radius: 999px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 18px;
+    }
+
+    #connectBtn {
+      background: rgba(37, 99, 235, 0.16);
+      border: 1px solid rgba(59, 130, 246, 0.9);
+      color: #bfdbfe;
+      margin-top: 8px;
+    }
+    #connectBtn:disabled {
+      opacity: 0.8;
+      cursor: default;
+    }
+
+    #mintBtn {
+      background: linear-gradient(135deg, #22c55e, #0ea5e9);
+      color: #ecfdf5;
+      box-shadow: 0 10px 35px rgba(16, 185, 129, 0.7);
+      min-width: 140px;
+    }
+    #mintBtn:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .input-shell {
+      margin-top: 14px;
+    }
+    .input-label {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+
+    .amount-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .amount-box {
+      flex: 1;
+      height: 56px;
+      border-radius: 999px;
+      background: #020617;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      display: flex;
+      align-items: center;
+      padding: 0 18px;
+      font-size: 18px;
+      color: #e5e7eb;
+    }
+
+    .amount-box input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: inherit;
+      font: inherit;
+      text-align: left;
+    }
+
+    .amount-box span {
+      margin-left: 6px;
+      font-size: 16px;
+      color: #9ca3af;
+    }
+
+    .est {
+      margin-top: 8px;
+      font-size: 13px;
+      color: #d1d5db;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 12px;
+      min-height: 16px;
+    }
+    .status.ok {
+      color: #4ade80;
+    }
+    .status.err {
+      color: #f97373;
+    }
+    .status.info {
+      color: #93c5fd;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: #020617;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #22c55e, #38bdf8);
+      box-shadow: 0 0 18px rgba(34, 197, 94, 0.8);
+      transition: width 0.4s ease-out;
+    }
+    .progress-text {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 12px;
+      color: #9ca3af;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    footer {
+      margin-top: 18px;
+      font-size: 11px;
+      text-align: center;
+      color: #6b7280;
+    }
+
+    @media (max-width: 640px) {
+      main {
+        padding: 14px 10px 28px;
+      }
+      .card {
+        padding: 16px 14px 18px;
+      }
+      h1 {
+        font-size: 20px;
+      }
+    }
+  </style>
+
+  <!-- ethers v6 -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
+</head>
+<body>
+<main>
+
+  <!-- HERO -->
+  <section class="card">
+    <div class="pill">
+      <span class="pill-dot"></span>
+      Live on Base · Mint for 0.0001 ETH
+    </div>
+    <div class="hero-header">
+      <div class="hero-logo">POB&gt;</div>
+      <div>
+        <h1>Proof of Build</h1>
+        <p class="sub">
+          A Base-native collectible for early miniapp creators and supporters.
+          Mint once, keep forever.
+        </p>
+      </div>
+    </div>
+    <button id="connectBtn">Connect wallet</button>
+
+    <div class="row">
+      <div>
+        <div class="label">Network</div>
+        <div class="value">Base Mainnet (8453)</div>
+      </div>
+      <div>
+        <div class="label">Price</div>
+        <div class="value">0.0001 ETH per NFT</div>
+      </div>
+      <div>
+        <div class="label">Max per wallet</div>
+        <div class="value">1 Proof of Build</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MINT PANEL -->
+  <section class="card">
+    <h2 style="margin:0 0 4px;font-size:20px;">Mint your Proof of Build</h2>
+    <p class="sub" style="margin-bottom:10px;">
+      Choose your contribution (fixed at 1 NFT per wallet). You’ll receive
+      <span class="mono">Proof of Build</span> directly to your address.
+    </p>
+
+    <div class="input-shell">
+      <div class="input-label">Quantity</div>
+      <div class="amount-row">
+        <div class="amount-box">
+          <input id="quantityInput" type="number" min="1" max="1" value="1" disabled />
+          <span>NFT</span>
+        </div>
+        <button id="mintBtn" disabled>Mint POB</button>
+      </div>
+      <div class="est">
+        Estimated: <span id="estNft">1</span> Proof of Build ·
+        <span id="estEth">0.0001</span> ETH
+      </div>
+      <div id="mintStatus" class="status info"></div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="card">
+    <h2 style="margin:0 0 6px;font-size:18px;">Mint stats</h2>
+    <p class="sub">On-chain stats for the Proof of Build drop.</p>
+
+    <div class="progress-bar">
+      <div id="progressFill" class="progress-fill"></div>
+    </div>
+    <div class="progress-text">
+      <span id="supplyText">Loading supply…</span>
+      <span id="youText" class="mono"></span>
+    </div>
+
+    <div class="row" style="margin-top:10px;">
+      <div>
+        <div class="label">Contract</div>
+        <div class="value mono">
+          <a href="https://basescan.org/address/0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C"
+             target="_blank" rel="noreferrer">
+            0x01b9...6386C
+          </a>
+        </div>
+      </div>
+      <div>
+        <div class="label">Token ID</div>
+        <div class="value mono">0 (Proof of Build)</div>
+      </div>
+      <div>
+        <div class="label">Max supply</div>
+        <div class="value" id="maxSupplyText">10,000</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="card">
+    <h2 style="margin:0 0 6px;font-size:18px;">How it works</h2>
+    <ol class="sub" style="padding-left:18px;font-size:13px;margin-top:4px;">
+      <li>Connect your wallet on Base Mainnet.</li>
+      <li>Mint exactly one <strong>Proof of Build</strong> for 0.0001 ETH.</li>
+      <li>Hold it as a badge of curiosity, experimentation, and shipping your first miniapp.</li>
+    </ol>
+    <p class="sub" style="margin-top:6px;">
+      This is an experimental collectible — no promise of value, just a record that
+      you showed up and built.
+    </p>
+  </section>
+
+  <footer>
+    Proof of Build • Base Miniapp Genesis • 2025
+  </footer>
+</main>
+
+<script>
+  // ====== CONSTANTS ======
+  const BASE_CHAIN_ID = 8453;
+  const CONTRACT_ADDRESS = "0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C";
+  const TOKEN_ID = 0;
+  const PRICE_ETH = "0.0001";
+  const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
+
+  // Singkat: ABI hanya fungsi yang kita pakai (claim, totalSupply, maxTotalSupply, balanceOf)
+  const CONTRACT_ABI = [
+    "function claim(address _receiver,uint256 _tokenId,uint256 _quantity,address _currency,uint256 _pricePerToken,(bytes32[] proof,uint256 quantityLimitPerWallet,uint256 pricePerToken,address currency) _allowlistProof,bytes _data) payable",
+    "function totalSupply(uint256 id) view returns (uint256)",
+    "function maxTotalSupply(uint256 id) view returns (uint256)",
+    "function balanceOf(address account,uint256 id) view returns (uint256)"
+  ];
+
+  // ====== DOM ======
+  const connectBtn = document.getElementById("connectBtn");
+  const mintBtn = document.getElementById("mintBtn");
+  const mintStatus = document.getElementById("mintStatus");
+  const estNft = document.getElementById("estNft");
+  const estEth = document.getElementById("estEth");
+  const progressFill = document.getElementById("progressFill");
+  const supplyText = document.getElementById("supplyText");
+  const youText = document.getElementById("youText");
+  const maxSupplyText = document.getElementById("maxSupplyText");
+
+  let signer = null;
+  let provider = null;
+  let currentAccount = null;
+
+  function setMintStatus(msg, type) {
+    mintStatus.textContent = msg || "";
+    mintStatus.className = "status " + (type || "");
+  }
+
+  async function ensureBase() {
+    const cidHex = await window.ethereum.request({ method: "eth_chainId" });
+    const cid = parseInt(cidHex, 16);
+    if (cid !== BASE_CHAIN_ID) {
+      await window.ethereum.request({
+        method: "wallet_switchEthereumChain",
+        params: [{ chainId: "0x" + BASE_CHAIN_ID.toString(16) }]
+      });
+    }
+  }
+
+  async function connectWallet() {
+    if (!window.ethereum) {
+      alert("No wallet detected. Please open this in the Base app or a browser wallet like MetaMask or Rabby.");
+      return;
+    }
+    try {
+      setMintStatus("Connecting wallet…", "info");
+      await window.ethereum.request({ method: "eth_requestAccounts" });
+      provider = new ethers.BrowserProvider(window.ethereum);
+      await ensureBase();
+      signer = await provider.getSigner();
+      currentAccount = await signer.getAddress();
+      const short = currentAccount.slice(0, 6) + "..." + currentAccount.slice(-4);
+      connectBtn.textContent = short;
+      connectBtn.disabled = true;
+      mintBtn.disabled = false;
+      setMintStatus("Wallet connected. You can mint 1 Proof of Build.", "ok");
+      refreshStats();
+    } catch (err) {
+      console.error(err);
+      setMintStatus(err.message || "Failed to connect wallet.", "err");
+    }
+  }
+
+  async function refreshStats() {
+    try {
+      const rpc = new ethers.JsonRpcProvider("https://mainnet.base.org");
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, rpc);
+
+      const [ts, max] = await Promise.all([
+        contract.totalSupply(TOKEN_ID),
+        contract.maxTotalSupply(TOKEN_ID)
+      ]);
+
+      const total = Number(ts.toString());
+      const maxN = Number(max.toString()) || 10000;
+      const percent = maxN > 0 ? (total / maxN) * 100 : 0;
+
+      progressFill.style.width = Math.min(percent, 100).toFixed(2) + "%";
+      supplyText.textContent =
+        "Minted: " +
+        total.toLocaleString() +
+        " / " +
+        maxN.toLocaleString() +
+        " POB (" +
+        percent.toFixed(2) +
+        "%)";
+      maxSupplyText.textContent = maxN.toLocaleString();
+
+      if (currentAccount) {
+        const bal = await contract.balanceOf(currentAccount, TOKEN_ID);
+        const n = Number(bal.toString());
+        if (n > 0) {
+          youText.textContent = "You hold " + n + " POB";
+          mintBtn.disabled = true;
+          setMintStatus("You already minted your Proof of Build. Thank you for building. ✨", "ok");
+        } else {
+          youText.textContent = "You hold 0 POB";
+        }
+      } else {
+        youText.textContent = "";
+      }
+    } catch (err) {
+      console.error("refreshStats error", err);
+      supplyText.textContent = "Failed to load supply data.";
+    }
+  }
+
+  async function mintNft() {
+    if (!signer || !currentAccount) {
+      setMintStatus("Connect your wallet first.", "err");
+      return;
+    }
+
+    try {
+      mintBtn.disabled = true;
+      setMintStatus("Waiting for wallet confirmation…", "info");
+
+      const contract = new ethers.Contract(CONTRACT_ADDRESS, CONTRACT_ABI, signer);
+      const priceWei = ethers.parseEther(PRICE_ETH);
+      const quantity = 1;
+
+      const allowlistProof = {
+        proof: [],
+        quantityLimitPerWallet: 0,
+        pricePerToken: priceWei,
+        currency: ZERO_ADDRESS
+      };
+
+      const tx = await contract.claim(
+        currentAccount,
+        TOKEN_ID,
+        quantity,
+        ZERO_ADDRESS,
+        priceWei,
+        allowlistProof,
+        "0x",
+        { value: priceWei * BigInt(quantity) }
+      );
+
+      setMintStatus("Transaction sent. Waiting for confirmation…", "info");
+      await tx.wait();
+
+      setMintStatus("Mint successful! Proof of Build is now in your wallet. ✅", "ok");
+      await refreshStats();
+    } catch (err) {
+      console.error(err);
+      mintBtn.disabled = false;
+      if (err && err.message) {
+        setMintStatus(err.message, "err");
+      } else {
+        setMintStatus("Mint failed or rejected.", "err");
+      }
+    }
+  }
+
+  // init
+  connectBtn.addEventListener("click", connectWallet);
+  mintBtn.addEventListener("click", mintNft);
+
+  // Set initial estimate text
+  estNft.textContent = "1";
+  estEth.textContent = PRICE_ETH;
+
+  // load stats read-only
+  refreshStats();
+</script>
+
+</body>
+</html>
