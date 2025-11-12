@@ -1,228 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <title>Proof of Build</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Proof of Build is a Base-native collectible for early miniapp creators and supporters. Mint as many as you want, keep it as your onchain builder badge." />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Open Graph -->
+  <meta name="description" content="Proof of Build is a Base-native collectible for early miniapp creators and supporters. Mint your onchain builder badge.">
+
+  <!-- OG & Miniapp -->
   <meta property="og:title" content="Proof of Build" />
-  <meta property="og:description" content="POB." />
+  <meta property="og:description" content="Base-native collectible for builders." />
   <meta property="og:image" content="https://pob-lyart.vercel.app/og.png" />
-  <meta property="og:url" content="https://pob-lyart.vercel.app" />
-  <meta property="og:type" content="website" />
+  <meta name="fc:miniapp"
+    content='{"version":"1","imageUrl":"https://pob-lyart.vercel.app/og.png","button":{"title":"Mint POB","action":{"type":"launch_miniapp","name":"Proof of Build","url":"https://pob-lyart.vercel.app","splashImageUrl":"https://pob-lyart.vercel.app/icon.png","splashBackgroundColor":"#0d1117"}}}' />
 
-  <!-- Farcaster MiniApp Embed -->
-  <meta
-    name="fc:miniapp"
-    content='{"version":"1","imageUrl":"https://pob-lyart.vercel.app/og.png","button":{"title":"Mint POB","action":{"type":"launch_miniapp","name":"Proof of Build","url":"https://pob-lyart.vercel.app","splashImageUrl":"https://pob-lyart.vercel.app/icon.png","splashBackgroundColor":"#0d1117"}}}'
-  />
-
-  <link rel="icon" type="image/png" href="https://pob-lyart.vercel.app/icon.png" />
-
+  <link rel="icon" href="icon.png">
   <style>
-    :root{
-      --bg:#0a0f12; --panel:#0d1419; --text:#dfe6eb; --muted:#9fb0bb;
-      --brand:#53e6ff; --brand-weak:rgba(83,230,255,.15); --ring:rgba(83,230,255,.35);
-      --radius:18px; --shadow:0 10px 40px rgba(0,0,0,.5); --glow:0 0 0 1px rgba(255,255,255,.08),0 0 40px var(--brand-weak); --max:880px;
+    body {
+      margin:0;background:#0b0f13;color:#e6edf3;font-family:Inter,system-ui,sans-serif;
+      display:flex;justify-content:center;align-items:center;min-height:100vh
     }
-    *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;background:radial-gradient(1200px 700px at 50% -10%,#10202a 0%,var(--bg) 55%) fixed;color:var(--text);
-      font:500 16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;}
-    .wrap{max-width:var(--max);margin:32px auto;padding:0 16px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.06);
-      border-radius:calc(var(--radius) + 6px);box-shadow:var(--shadow);overflow:hidden}
-    .hero{position:relative;padding:16px;background:linear-gradient(180deg,#121a20,#0c1216);border-bottom:1px solid rgba(255,255,255,.06)}
-    .hero figure{margin:0;border-radius:24px;overflow:hidden;box-shadow:var(--glow);aspect-ratio:1000/679;background:#000}
-    .hero img{width:100%;height:100%;object-fit:cover;display:block}
-    .content{padding:22px} h1{margin:.2rem 0 1rem;font-weight:700;letter-spacing:.2px;font-size:clamp(22px,3.2vw,28px)}
-    .muted{color:var(--muted)} .grid{display:grid;gap:14px;grid-template-columns:1fr auto;align-items:center;margin:14px 0 16px}
-    .stat{font-size:14px;color:var(--muted)} .stat b{color:var(--text)}
-    .row{display:flex;gap:12px;align-items:center;margin:16px 0}
-    input.qty{width:140px;height:48px;border-radius:12px;background:#0b1216;border:1px solid rgba(255,255,255,.08);
-      color:var(--text);padding:0 14px;font:600 16px/48px inherit}
-    .btn{height:48px;padding:0 22px;border-radius:14px;border:0;cursor:pointer;font-weight:700;letter-spacing:.2px}
-    .btn-primary{background:linear-gradient(180deg,rgba(83,230,255,.9),rgba(43,170,210,.9));color:#001317;box-shadow:0 10px 30px var(--brand-weak)}
-    .btn-primary:disabled{opacity:.5;cursor:not-allowed}
-    .btn-outline{background:transparent;color:var(--text);border:1.5px solid var(--ring);box-shadow:inset 0 0 0 1px rgba(255,255,255,.05)}
-    .addr{margin-top:10px;display:inline-block;font-size:14px;color:var(--muted);padding:10px 14px;border:1px dashed rgba(255,255,255,.12);border-radius:12px}
-    footer{opacity:.7;font-size:12px;margin:14px 0 8px}
-    @media (max-width:560px){.grid{grid-template-columns:1fr}.row{flex-direction:column;align-items:stretch}input.qty,.btn{width:100%}}
+    .wrap {width:90%;max-width:420px;background:#0f141a;border:1px solid #222;border-radius:14px;padding:22px;text-align:center}
+    img {width:100%;border-radius:12px;box-shadow:0 0 40px rgba(0,255,255,.05)}
+    h1 {margin:14px 0;font-size:24px}
+    .muted {color:#8ea0ae;font-size:14px}
+    input,button {width:100%;height:48px;border-radius:12px;border:none;font-size:16px}
+    input {padding:0 12px;background:#12191f;color:#e6edf3;border:1px solid #222;margin-top:14px}
+    .btn-primary {background:linear-gradient(180deg,#53e6ff,#1fbfd9);color:#001319;font-weight:700;margin-top:12px;cursor:pointer}
+    .btn-outline {margin-top:10px;background:none;border:1px solid #2a3a44;color:#d8e3eb;cursor:pointer}
+    .addr {display:block;margin-top:8px;font-size:13px;color:#9db1bb}
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="card">
-      <section class="hero">
-        <figure><img src="/og.png" alt="POB cover" /></figure>
-      </section>
+    <img src="og.png" alt="POB">
+    <h1>Proof of Build</h1>
+    <p class="muted">Mint your onchain builder badge and join early Base miniapp creators.</p>
 
-      <section class="content">
-        <h1>Proof of Build</h1>
-        <div class="muted">Chain: <b style="color:#cbe9f2">Base</b></div>
-
-        <p class="muted" style="margin:10px 0 14px">
-          Mint your onchain builder badge and join early Base miniapp creators.
-        </p>
-
-        <div class="grid">
-          <div class="stat">Minted: <b id="minted">0 / 10,000 (0.00%)</b></div>
-          <div class="stat">Price: <b>0.0001 ETH</b></div>
-        </div>
-
-        <div class="grid" style="margin-top:0">
-          <div class="stat">You hold: <b id="youHold">0 POB</b></div>
-          <div class="stat">Contract: <a id="addr" class="muted" target="_blank" rel="noopener">0x01b9...6386C</a></div>
-        </div>
-
-        <div class="row">
-          <input class="qty" id="qty" type="number" min="1" step="1" value="1" />
-          <button class="btn btn-primary" id="mintBtn">Mint POB</button>
-        </div>
-
-        <div class="row" style="margin-top:8px">
-          <button class="btn btn-outline" id="connectBtn">Connect wallet</button>
-        </div>
-
-        <span class="addr" id="acct">Wallet: not connected</span>
-
-        <footer class="muted">
-          If you cast this link on Warpcast and the preview doesn’t show, make sure there is <b>no extra space or newline after the URL</b>.
-        </footer>
-      </section>
-    </div>
+    <input id="qty" type="number" min="1" value="1" />
+    <button id="mintBtn" class="btn-primary">Mint POB</button>
+    <button id="connectBtn" class="btn-outline">Connect Wallet</button>
+    <span id="acct" class="addr">Wallet: not connected</span>
   </div>
 
-  <!-- viem (CDN) -->
   <script src="https://unpkg.com/viem@2.21.32/dist/index.umd.js"></script>
   <script>
-    // ==== CONFIG ====
     const CONTRACT = '0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C';
     const TOKEN_ID = 0n;
     const PRICE_ETH = '0.0001';
-    const NATIVE_TOKEN = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE'; // <— penting utk thirdweb Drop1155
-    const BASESCAN = 'https://basescan.org/address/' + CONTRACT;
+    const NATIVE = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
 
-    document.getElementById('addr').href = BASESCAN;
-
-    const { createPublicClient, createWalletClient, http, parseEther, getContract, toHex } = viem;
-    const base = viem.chain.base;
-
+    const { createPublicClient, createWalletClient, http, parseEther, custom, getContract, chain } = viem;
+    const base = chain.base;
     const publicClient = createPublicClient({ chain: base, transport: http() });
 
-    let walletClient = null;
-    let account = null;
-
-    const acctEl = document.getElementById('acct');
-    const connectBtn = document.getElementById('connectBtn');
+    let walletClient, account;
     const mintBtn = document.getElementById('mintBtn');
+    const connectBtn = document.getElementById('connectBtn');
+    const acctEl = document.getElementById('acct');
     const qtyEl = document.getElementById('qty');
-    const mintedEl = document.getElementById('minted');
-    const youHoldEl = document.getElementById('youHold');
 
-    const abi = /* paste your ABI JSON exactly as you sent me */ <?php /* ignore on vercel if not PHP */ ?>;
+    const abi = [/* paste full ABI JSON di sini */];
 
     const contract = getContract({
       address: CONTRACT,
       abi,
-      client: { public: publicClient }
+      client: { public: publicClient },
     });
 
-    async function ensureBaseNetwork() {
-      if (!window.ethereum) throw new Error('No wallet found');
+    async function ensureBase() {
+      if (!window.ethereum) throw new Error('Wallet not found');
       try {
-        await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: toHex(base.id) }] });
+        await window.ethereum.request({
+          method: 'wallet_switchEthereumChain',
+          params: [{ chainId: viem.toHex(base.id) }],
+        });
       } catch (e) {
-        // add chain if missing
         if (e.code === 4902) {
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [{
-              chainId: toHex(base.id),
+              chainId: viem.toHex(base.id),
               chainName: 'Base',
-              nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
               rpcUrls: ['https://mainnet.base.org'],
-              blockExplorerUrls: ['https://basescan.org']
-            }]
+              nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+              blockExplorerUrls: ['https://basescan.org'],
+            }],
           });
-        } else {
-          throw e;
-        }
+        } else throw e;
       }
     }
 
-    async function connectWallet(){
-      if(!window.ethereum){ alert('Install a wallet (Coinbase Wallet / Rabby / MetaMask).'); return; }
-      await ensureBaseNetwork();
-      walletClient = createWalletClient({ chain: base, transport: window.ethereum });
-      const [acc] = await walletClient.requestAddresses();
-      account = acc;
-      acctEl.textContent = 'Wallet: ' + acc.slice(0,6) + '…' + acc.slice(-4);
+    async function connectWallet() {
+      const provider = window.ethereum;
+      if (!provider) return alert('Please install a wallet.');
+      await ensureBase();
+
+      walletClient = createWalletClient({
+        chain: base,
+        transport: custom(provider),
+      });
+      await provider.request({ method: 'eth_requestAccounts' });
+
+      const [addr] = await walletClient.requestAddresses();
+      account = addr;
+      acctEl.textContent = 'Wallet: ' + addr.slice(0,6) + '…' + addr.slice(-4);
       connectBtn.textContent = 'Wallet connected';
-      await refreshState();
     }
 
-    async function refreshState(){
-      try {
-        // total minted for TOKEN_ID
-        const total = await contract.read.totalSupply([TOKEN_ID]);
-        // your balance
-        const bal = account ? await contract.read.balanceOf([account, TOKEN_ID]) : 0n;
-
-        const minted = Number(total);
-        const percent = (minted/10000*100).toFixed(2);
-        mintedEl.textContent = `${minted} / 10,000 (${percent}%)`;
-        youHoldEl.textContent = `${bal} POB`;
-      } catch (e) {
-        // ignore if not initialized yet
-      }
-    }
-
-    async function mint(){
+    async function mint() {
       try {
         if (!walletClient) await connectWallet();
-        const qty = BigInt(Math.max(1, parseInt(qtyEl.value || '1', 10)));
+        const qty = BigInt(qtyEl.value || 1);
         const priceWei = parseEther(PRICE_ETH);
 
-        // call Drop1155.claim with currency = NATIVE_TOKEN (0xEeee…EEeE)
         const hash = await walletClient.writeContract({
           address: CONTRACT,
           abi,
           functionName: 'claim',
           args: [
-            account,           // _receiver
-            TOKEN_ID,          // _tokenId
-            qty,               // _quantity
-            NATIVE_TOKEN,      // _currency (MUST be 0xEeee…EEeE for ETH)
-            priceWei,          // _pricePerToken (must match phase)
-            {                  // _allowlistProof (empty / no list)
-              proof: [],
-              quantityLimitPerWallet: 0n,
-              pricePerToken: priceWei,
-              currency: NATIVE_TOKEN
-            },
-            '0x'               // _data
+            account,
+            TOKEN_ID,
+            qty,
+            NATIVE,
+            priceWei,
+            { proof: [], quantityLimitPerWallet: 0n, pricePerToken: priceWei, currency: NATIVE },
+            '0x'
           ],
           value: priceWei * qty,
-          account
+          account,
         });
 
         await publicClient.waitForTransactionReceipt({ hash });
-        await refreshState();
-        alert('Mint success!');
+        alert('✅ Mint success!');
       } catch (err) {
-        let msg = (err && err.shortMessage) || (err && err.message) || String(err);
-        if (msg.includes('DropClaimInvalidTokenPrice')) {
-          msg = 'Mint gagal: DropClaimInvalidTokenPrice. Pastikan Claim Phase di dashboard: currency = ETH dan price = 0.0001';
-        }
+        let msg = err?.shortMessage || err?.message || String(err);
+        if (msg.includes('DropClaimInvalidTokenPrice'))
+          msg = 'Mint gagal: pastikan price = 0.0001 ETH dan currency = ETH di dashboard.';
         alert(msg);
       }
     }
 
-    connectBtn.addEventListener('click', connectWallet);
-    mintBtn.addEventListener('click', mint);
-    refreshState();
+    connectBtn.onclick = connectWallet;
+    mintBtn.onclick = mint;
   </script>
 </body>
 </html>
