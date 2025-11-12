@@ -28,6 +28,10 @@
     }
   }' />
 
+  <!-- CSP fix agar Warpcast bisa buka halaman -->
+  <meta http-equiv="Content-Security-Policy"
+        content="frame-ancestors 'self' https://warpcast.com https://*.warpcast.com https://*.farcaster.xyz;">
+
   <style>
     body {
       font-family: system-ui, sans-serif;
@@ -124,7 +128,7 @@
     const CONTRACT = "0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C";
     const TOKEN_ID = 0;
     const PRICE_ETH = "0.0001";
-    const CHAIN_ID_HEX = "0x2105"; // Base
+    const CHAIN_ID_HEX = "0x2105"; // Base chain
     const NATIVE = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE";
 
     const addrA = document.getElementById("addr");
@@ -219,12 +223,7 @@
         };
 
         let tx;
-        try {
-          tx = await contract.claim(account, TOKEN_ID, q, NATIVE, priceWei, allowlist, "0x", { value: totalValue });
-        } catch (e) {
-          await contract.callStatic.claim(account, TOKEN_ID, q, NATIVE, priceWei, allowlist, "0x", { value: totalValue });
-          tx = await contract.claim(account, TOKEN_ID, q, NATIVE, priceWei, allowlist, "0x", { value: totalValue });
-        }
+        tx = await contract.claim(account, TOKEN_ID, q, NATIVE, priceWei, allowlist, "0x", { value: totalValue });
 
         show("Tx sent…");
         await tx.wait();
