@@ -13,6 +13,6 @@
     "buttonTitle": "Mint POB",
     "splashImageUrl": "https://pob-lyart.vercel.app/splash.png",
     "splashBackgroundColor": "#eeccff",
-    "webhookUrl": null
+    "webhookUrl": ""
   }
 }
