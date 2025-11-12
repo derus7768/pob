@@ -1,106 +1,222 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Proof of Build</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Proof of Build is a Base-native collectible for early miniapp creators and supporters. Mint as many as you want, keep it as your onchain builder badge">
-  <meta property="og:title" content="Proof of Build">
-  <meta property="og:description" content="POB mint">
-  <meta property="og:image" content="https://pob-lyart.vercel.app/og.png">
-  <meta property="og:url" content="https://pob-lyart.vercel.app">
-  <meta property="og:type" content="website">
-  <meta name="fc:miniapp"
-    content='{"version":"1","imageUrl":"https://pob-lyart.vercel.app/og.png","button":{"title":"Mint POB","action":{"type":"launch_miniapp","name":"Proof of Build","url":"https://pob-lyart.vercel.app","splashImageUrl":"https://pob-lyart.vercel.app/icon.png","splashBackgroundColor":"#0d1117"}}}' />
-  <link rel="icon" type="image/png" href="https://pob-lyart.vercel.app/icon.png">
   <style>
-    body{margin:0;background:#0a0f12;color:#dfe6eb;font-family:Inter,system-ui,sans-serif}
-    .wrap{max-width:880px;margin:40px auto;padding:0 16px}
-    .card{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.06);border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,.5);overflow:hidden}
-    .hero img{width:100%;display:block}
-    .content{padding:22px}
-    h1{margin:.3rem 0 1rem;font-size:28px;font-weight:700}
-    .muted{color:#9fb0bb}
-    .grid{display:grid;grid-template-columns:1fr auto;gap:12px;margin:10px 0}
-    .btn{height:48px;border:0;border-radius:12px;font-weight:600;cursor:pointer}
-    .btn-primary{background:linear-gradient(180deg,#53e6ff,#2baad2);color:#001317}
-    .btn-primary:disabled{opacity:.6;cursor:not-allowed}
-    .btn-outline{background:transparent;color:#dfe6eb;border:1px solid rgba(83,230,255,.4)}
-    input{height:48px;border-radius:12px;background:#0b1216;border:1px solid rgba(255,255,255,.08);color:#dfe6eb;padding:0 14px;width:120px}
-    .row{display:flex;gap:10px;margin:14px 0}
-    .note{font-size:14px;color:#9fb0bb;margin-top:10px}
+    body {
+      font-family: system-ui, sans-serif;
+      background-color: #0d0f13;
+      color: #d8d8d8;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 420px;
+      width: 100%;
+      background: #14181f;
+      border: 1px solid #222831;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    }
+    h1 {
+      color: #f1f1f1;
+      font-size: 1.6em;
+      margin-bottom: 6px;
+    }
+    a { color: #4ba3ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .mint-btn {
+      margin-top: 12px;
+      background: linear-gradient(90deg, #38bdf8, #2563eb);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 1em;
+      cursor: pointer;
+      width: 100%;
+    }
+    .mint-btn:disabled { background: #555; cursor: not-allowed; }
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #333;
+      background-color: #1e232c;
+      color: white;
+      text-align: center;
+      font-size: 1em;
+      margin-top: 10px;
+    }
+    .wallet-info {
+      background: #1a1f27;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: #aaa;
+    }
+    .status {
+      margin-top: 10px;
+      color: #4ba3ff;
+      font-size: 0.95em;
+    }
   </style>
 </head>
+
 <body>
-<div class="wrap">
-<div class="card">
-  <div class="hero"><img src="/og.png"></div>
-  <div class="content">
+  <div class="container">
     <h1>Proof of Build</h1>
-    <div class="muted">Chain: <b style="color:#cbe9f2">Base</b></div>
-    <p class="muted">Mint your onchain builder badge and join the early Base miniapp creators.</p>
-    <div class="grid">
-      <div class="muted">Minted: <b id="minted">0</b></div>
-      <div class="muted">Price: <b>0.0001 ETH</b></div>
-    </div>
-    <div class="grid">
-      <div class="muted">You hold: <b id="youHold">0 POB</b></div>
-      <div class="muted">Contract: <a id="addr" href="#" target="_blank" style="color:#53e6ff">view</a></div>
-    </div>
-    <div class="row">
-      <input id="qty" type="number" min="1" value="1">
-      <button class="btn btn-primary" id="mintBtn">Mint POB</button>
-    </div>
-    <div class="row"><button class="btn btn-outline" id="connectBtn">Connect wallet</button></div>
-    <div class="note" id="acct">Wallet : not connected</div>
-    <div class="note" id="status"></div>
+    <p>
+      Chain: <a href="https://basescan.org/" target="_blank">Base</a><br>
+      Mint your onchain builder badge and join early Base miniapp creators.
+    </p>
+    <p id="minted">Minted: ...</p>
+    <p>Price: 0.0001 ETH</p>
+    <p id="youHold">You hold: 0 POB</p>
+    <p>Contract: <a id="addr" href="#" target="_blank">Loading...</a></p>
+
+    <input id="qty" type="number" min="1" value="1" />
+    <button id="mintBtn" class="mint-btn">Mint POB</button>
+    <button id="connectBtn" class="mint-btn" style="background:#1d4ed8;margin-top:8px;">Connect wallet</button>
+
+    <div class="wallet-info" id="acct">Wallet: not connected</div>
+    <div class="status" id="status"></div>
   </div>
-</div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-<script>
-(async()=>{
-  const CONTRACT="0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C";
-  const TOKEN_ID=0, PRICE="0.0001";
-  const BASECHAIN="0x2105", ZERO="0x0000000000000000000000000000000000000000";
-  document.getElementById("addr").href="https://basescan.org/address/"+CONTRACT;
-  const note=document.getElementById("status"), acct=document.getElementById("acct");
-  const connectBtn=document.getElementById("connectBtn"), mintBtn=document.getElementById("mintBtn"), qty=document.getElementById("qty");
-  const ABI=[{"inputs":[{"internalType":"address","name":"_receiver","type":"address"},{"internalType":"uint256","name":"_tokenId","type":"uint256"},{"internalType":"uint256","name":"_quantity","type":"uint256"},{"internalType":"address","name":"_currency","type":"address"},{"internalType":"uint256","name":"_pricePerToken","type":"uint256"},{"components":[{"internalType":"bytes32[]","name":"proof","type":"bytes32[]"},{"internalType":"uint256","name":"quantityLimitPerWallet","type":"uint256"},{"internalType":"uint256","name":"pricePerToken","type":"uint256"},{"internalType":"address","name":"currency","type":"address"}],"internalType":"struct IDrop1155.AllowlistProof","name":"_allowlistProof","type":"tuple"},{"internalType":"bytes","name":"_data","type":"bytes"}],"name":"claim","outputs":[],"stateMutability":"payable","type":"function"},{"inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"}],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"id","type":"uint256"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"}];
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <script>
+  (async () => {
+    const CONTRACT = "0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C";
+    const TOKEN_ID = 0;
+    const PRICE_ETH = "0.0001";
+    const CHAIN_ID_HEX = "0x2105"; // Base
+    const NATIVE = "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE"; // ETH
+    const ZERO = "0x0000000000000000000000000000000000000000";
 
-  let provider,signer,contract,account;
-  async function ensureProvider(){
-    if(!window.ethereum)throw"Wallet not found";
-    provider=new ethers.providers.Web3Provider(window.ethereum,"any");
-    await provider.send("eth_requestAccounts",[]);
-    const net=await provider.getNetwork();
-    if(net.chainId!==8453){
-      await provider.send("wallet_switchEthereumChain",[{chainId:BASECHAIN}]);
+    const addrA = document.getElementById("addr");
+    const acctEl = document.getElementById("acct");
+    const statusEl = document.getElementById("status");
+    const youHoldEl = document.getElementById("youHold");
+    const mintedEl = document.getElementById("minted");
+    const qtyEl = document.getElementById("qty");
+    const connectBtn = document.getElementById("connectBtn");
+    const mintBtn = document.getElementById("mintBtn");
+
+    addrA.href = "https://basescan.org/address/" + CONTRACT;
+
+    const ABI = [
+      {
+        "inputs":[
+          {"internalType":"address","name":"_receiver","type":"address"},
+          {"internalType":"uint256","name":"_tokenId","type":"uint256"},
+          {"internalType":"uint256","name":"_quantity","type":"uint256"},
+          {"internalType":"address","name":"_currency","type":"address"},
+          {"internalType":"uint256","name":"_pricePerToken","type":"uint256"},
+          {"components":[
+            {"internalType":"bytes32[]","name":"proof","type":"bytes32[]"},
+            {"internalType":"uint256","name":"quantityLimitPerWallet","type":"uint256"},
+            {"internalType":"uint256","name":"pricePerToken","type":"uint256"},
+            {"internalType":"address","name":"currency","type":"address"}],
+           "internalType":"struct IDrop1155.AllowlistProof","name":"_allowlistProof","type":"tuple"},
+          {"internalType":"bytes","name":"_data","type":"bytes"}
+        ],
+        "name":"claim","outputs":[],"stateMutability":"payable","type":"function"
+      },
+      {
+        "inputs":[{"internalType":"address","name":"account","type":"address"},{"internalType":"uint256","name":"id","type":"uint256"}],
+        "name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],
+        "stateMutability":"view","type":"function"
+      },
+      {
+        "inputs":[{"internalType":"uint256","name":"_tokenId","type":"uint256"}],
+        "name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],
+        "stateMutability":"view","type":"function"
+      }
+    ];
+
+    let provider, signer, contract, account;
+
+    function show(msg){ statusEl.textContent = msg; }
+
+    async function ensureProvider(){
+      if(!window.ethereum) throw new Error("Wallet not found");
+      provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+      await provider.send("eth_requestAccounts",[]);
+      const net = await provider.getNetwork();
+      if(net.chainId !== 8453){
+        await provider.send("wallet_switchEthereumChain", [{ chainId: CHAIN_ID_HEX }]);
+      }
+      signer = provider.getSigner();
+      account = await signer.getAddress();
+      contract = new ethers.Contract(CONTRACT, ABI, signer);
+      acctEl.textContent = "Wallet: " + account.slice(0,6) + "…" + account.slice(-4);
     }
-    signer=provider.getSigner();
-    account=await signer.getAddress();
-    contract=new ethers.Contract(CONTRACT,ABI,signer);
-    acct.textContent="Wallet: "+account.slice(0,6)+"…"+account.slice(-4);
-  }
 
-  connectBtn.onclick=async()=>{note.textContent="";try{await ensureProvider();note.textContent="Wallet connected.";}catch(e){note.textContent=e.message||e}};
-  mintBtn.onclick=async()=>{
-    note.textContent="";
-    try{
-      await ensureProvider();
-      const q=parseInt(qty.value)||1;
-      const priceWei=ethers.utils.parseEther(PRICE);
-      const total=priceWei.mul(q);
-      const allowlist={proof:[],quantityLimitPerWallet:ethers.constants.MaxUint256,pricePerToken:priceWei,currency:ZERO};
-      note.textContent="Waiting for wallet…";
-      const tx=await contract.claim(account,TOKEN_ID,q,ZERO,priceWei,allowlist,"0x",{value:total});
-      note.textContent="Tx sent → "+tx.hash.slice(0,10)+"…";
-      await tx.wait();
-      note.textContent="✅ Mint success";
-    }catch(e){note.textContent=e.error?.message||e.data?.message||e.message||String(e);}
-  };
-})();
-</script>
+    async function refresh(){
+      if(!contract || !account) return;
+      try{
+        const bal = await contract.balanceOf(account, TOKEN_ID);
+        youHoldEl.textContent = `${bal.toString()} POB`;
+        const ts = await contract.totalSupply(TOKEN_ID);
+        mintedEl.textContent = `Minted: ${ts.toString()}`;
+      }catch{}
+    }
+
+    connectBtn.onclick = async () => {
+      show("");
+      try{ await ensureProvider(); await refresh(); show("Wallet connected."); }
+      catch(e){ show(e.message || String(e)); }
+    };
+
+    mintBtn.onclick = async () => {
+      show("");
+      try{
+        await ensureProvider();
+        const q = Math.max(1, parseInt(qtyEl.value || "1", 10));
+        const priceWei = ethers.utils.parseEther(PRICE_ETH);
+        const totalValue = priceWei.mul(q);
+
+        const allowlist = {
+          proof: [],
+          quantityLimitPerWallet: ethers.constants.MaxUint256,
+          pricePerToken: priceWei,
+          currency: NATIVE
+        };
+
+        await contract.callStatic.claim(
+          account, TOKEN_ID, q, NATIVE, priceWei, allowlist, "0x",
+          { value: totalValue }
+        );
+
+        show("Waiting for wallet confirmation…");
+        const tx = await contract.claim(
+          account, TOKEN_ID, q, NATIVE, priceWei, allowlist, "0x",
+          { value: totalValue }
+        );
+        show("Tx sent: " + tx.hash.slice(0,10) + "…");
+        await tx.wait();
+        show("✅ Mint success");
+        await refresh();
+      }catch(e){
+        const msg = e?.error?.message || e?.data?.message || e?.reason || e?.message || "execution reverted";
+        show(msg);
+      }
+    };
+
+    if(window.ethereum){
+      try{ await ensureProvider(); await refresh(); }catch{}
+    }
+  })();
+  </script>
 </body>
 </html>
