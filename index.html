@@ -4,16 +4,16 @@
   <meta charset="UTF-8" />
   <title>Proof of Build</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Proof of Build is a Base-native collectible for early miniapp creators and supporters. Mint as many as you want, keep it as your onchain builder badge" />
+  <meta name="description" content="Proof of Build is a Base-native collectible for early miniapp creators and supporters. Mint as many as you want, keep it as your onchain builder badge." />
 
-  <!-- Open Graph -->
+  <!-- OG -->
   <meta property="og:title" content="Proof of Build" />
   <meta property="og:description" content="Mint your POB on Base." />
   <meta property="og:image" content="https://pob-lyart.vercel.app/og.png" />
   <meta property="og:url" content="https://pob-lyart.vercel.app" />
   <meta property="og:type" content="website" />
 
-  <!-- Farcaster MiniApp button -->
+  <!-- Farcaster miniapp -->
   <meta name="fc:miniapp"
     content='{
       "version":"1",
@@ -28,7 +28,7 @@
           "splashBackgroundColor":"#0d1117"
         }
       }
-    }' />
+    }'/>
 
   <link rel="icon" type="image/png" href="https://pob-lyart.vercel.app/icon.png" />
 
@@ -120,14 +120,15 @@
     </div>
   </div>
 
+  <!-- ethers.js -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+
   <script>
-    // ========= Config =========
     const BASE_CHAIN_ID_HEX = '0x2105'; // 8453
     const CONTRACT = '0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C';
     const BASESCAN = 'https://basescan.org/address/' + CONTRACT;
     document.getElementById('addr').href = BASESCAN;
 
-    // Mark ready supaya miniapp nggak stuck di splash
     window.addEventListener('load', () => {
       try { parent.postMessage({ type: 'miniapp_ready' }, '*'); } catch(e) {}
     });
@@ -137,19 +138,19 @@
     const mintBtn = document.getElementById('mintBtn');
     const qtyEl = document.getElementById('qty');
 
-    let provider, currentAccount;
+    let provider, signer, currentAccount;
 
     function getProvider(){
       return window.ethereum || window.coinbaseWalletExtension || null;
     }
 
     async function ensureBaseChain(pvd){
-      const chainId = await pvd.request({ method: 'eth_chainId' });
+      const chainId = await pvd.request({ method:'eth_chainId' });
       if (chainId !== BASE_CHAIN_ID_HEX) {
-        try{
+        try {
           await pvd.request({ method:'wallet_switchEthereumChain', params:[{ chainId: BASE_CHAIN_ID_HEX }] });
-        }catch(err){
-          if (err && err.code === 4902) {
+        } catch (err) {
+          if (err.code === 4902) {
             await pvd.request({
               method:'wallet_addEthereumChain',
               params:[{
@@ -167,50 +168,65 @@
 
     async function connectWallet(){
       provider = getProvider();
-      if(!provider){ alert('Install/aktifkan wallet (Coinbase/Rabby/MetaMask).'); return; }
+      if(!provider){ alert('Install Coinbase / MetaMask first.'); return; }
       await ensureBaseChain(provider);
-      const accs = await provider.request({ method:'eth_requestAccounts' });
-      currentAccount = accs[0];
-      acctEl.textContent = 'Wallet: ' + currentAccount.slice(0,6) + '…' + currentAccount.slice(-4);
+      const accounts = await provider.request({ method:'eth_requestAccounts' });
+      currentAccount = accounts[0];
+      acctEl.textContent = 'Wallet: ' + currentAccount.slice(0,6)+'…'+currentAccount.slice(-4);
       connectBtn.textContent = 'Wallet connected';
       mintBtn.disabled = false;
+      signer = new ethers.providers.Web3Provider(provider).getSigner();
     }
 
     connectBtn.addEventListener('click', connectWallet);
 
-    // ====== Tempatkan logika mint-mu di sini ======
-    // Ganti isi fungsi ini dengan fungsi mint yang sudah pernah berhasil (ABI/viem/ethers).
-    // Pastikan value = qty * 0.0001 ETH bila kontrak minta pembayaran.
+    // ====== Fungsi Mint ======
     async function doMint(qty){
-      // contoh placeholder — ganti dengan mint-mu sendiri:
-      throw new Error('Hook mint belum diisi. Tempel logika mint kamu di fungsi doMint(qty).');
+      const abi = [
+        "function claim(address _receiver,uint256 _tokenId,uint256 _quantity,address _currency,uint256 _pricePerToken,(bytes32[] proof,uint256 quantityLimitPerWallet,uint256 pricePerToken,address currency) _allowlistProof,bytes _data) payable"
+      ];
+      const c = new ethers.Contract(CONTRACT, abi, signer);
+      const me = await signer.getAddress();
+      const tokenId = 0;
+      const price = ethers.utils.parseEther("0.0001");
+      const currency = "0x0000000000000000000000000000000000000000";
+      const allowlistProof = {
+        proof: [],
+        quantityLimitPerWallet: ethers.constants.MaxUint256,
+        pricePerToken: price,
+        currency: currency
+      };
+      const tx = await c.claim(me, tokenId, qty, currency, price, allowlistProof, "0x", { value: price.mul(qty) });
+      await tx.wait();
+      alert("✅ Mint success! Tx: " + tx.hash);
     }
 
     mintBtn.addEventListener('click', async () => {
-      try{
+      try {
         if(!currentAccount) await connectWallet();
         const q = Math.max(1, parseInt(qtyEl.value||'1',10));
         await doMint(q);
-      }catch(err){
-        console.error(err);
-        alert(err?.message || 'Mint failed. Check wallet and try again.');
+      } catch (e) {
+        alert("Mint failed: " + (e.message || e));
+        console.error(e);
       }
     });
 
-    // Auto-enable bila wallet sudah authorized
+    // Auto reconnect
     (async () => {
-      try{
+      try {
         const p = getProvider();
         if(!p) return;
         const accs = await p.request({ method:'eth_accounts' });
-        if(accs && accs.length){
+        if(accs.length){
           currentAccount = accs[0];
           await ensureBaseChain(p);
-          acctEl.textContent = 'Wallet: ' + currentAccount.slice(0,6) + '…' + currentAccount.slice(-4);
+          signer = new ethers.providers.Web3Provider(p).getSigner();
+          acctEl.textContent = 'Wallet: ' + currentAccount.slice(0,6)+'…'+currentAccount.slice(-4);
           connectBtn.textContent = 'Wallet connected';
           mintBtn.disabled = false;
         }
-      }catch{}
+      } catch {}
     })();
   </script>
 </body>
