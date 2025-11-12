@@ -1,0 +1,18 @@
+{
+  "accountAssociation": {
+    "header": "eyJmaWQiOjU2NTk5MCwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweGFmMjVjN0ZmRWY4NmQ4NzQyOEIxNTNCODQ4YjQxZDZERDAyMjAxNUEifQ",
+    "payload": "eyJkb21haW4iOiJwb2ItbHlhcnQudmVyY2VsLmFwcCJ9",
+    "signature": "qoHgGEx5ot/wSJPkIDC9FTstKR1/02R5z/qypPI8o0Y4Gla24mncBAm8UiPlcjT2/tP8dsPUWUeG0MDpLVlBWBw="
+  },
+  "frame": {
+    "version": "1",
+    "name": "Proof of Build",
+    "iconUrl": "https://pob-lyart.vercel.app/icon.png",
+    "homeUrl": "https://pob-lyart.vercel.app",
+    "imageUrl": "https://pob-lyart.vercel.app/image.png",
+    "buttonTitle": "Check this out",
+    "splashImageUrl": "https://pob-lyart.vercel.app/splash.png",
+    "splashBackgroundColor": "#eeccff",
+    "webhookUrl": "https://pob-lyart.vercel.app/api/webhook"
+  }
+}
