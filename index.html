@@ -9,12 +9,13 @@
     content="Proof of Build — a Base-native collectible for early miniapp creators and supporters."
   />
 
-  <!-- Open Graph (ganti URL kalau beda) -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Proof of Build" />
   <meta
     property="og:description"
     content="Mint your Proof of Build — a Base-native collectible for early miniapp builders and supporters."
   />
+  <!-- kalau og.png kamu taruh di repo sendiri, cukup pakai /og.png -->
   <meta property="og:image" content="https://pob-lyart.vercel.app/og.png" />
   <meta property="og:url" content="https://pob-lyart.vercel.app" />
   <meta property="og:type" content="website" />
@@ -43,7 +44,6 @@
       min-height: 100vh;
     }
 
-    /* HERO */
     .hero-img {
       width: 100%;
       aspect-ratio: 16 / 10;
@@ -102,7 +102,6 @@
       border-top: 1px solid rgba(15, 23, 42, 0.85);
     }
 
-    /* INPUT + BUTTON */
     .qty-label {
       font-size: 12px;
       color: #9ca3af;
@@ -209,12 +208,11 @@
     }
   </style>
 
-  <!-- ethers.js -->
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
 </head>
 <body>
 <main>
-  <!-- HERO IMAGE (pakai gambar NFT kamu) -->
+  <!-- Ganti URL ini kalau og.png kamu host di tempat lain -->
   <img
     src="https://pob-lyart.vercel.app/og.png"
     alt="Proof of Build"
@@ -294,14 +292,12 @@
 </main>
 
 <script>
-  // ===== CONFIG =====
   const CONTRACT_ADDRESS = "0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C";
-  const TOKEN_ID = 0n;           // ERC1155 token id
-  const CHAIN_ID = 8453;         // Base mainnet
-  const CHAIN_ID_HEX = "0x2105"; // 8453 in hex
+  const TOKEN_ID = 0n;
+  const CHAIN_ID = 8453;
+  const CHAIN_ID_HEX = "0x2105";
   const RPC_URL = "https://mainnet.base.org";
 
-  // Minimal ABI
   const ABI = [
     "function totalSupply(uint256) view returns (uint256)",
     "function maxTotalSupply(uint256) view returns (uint256)",
@@ -311,7 +307,6 @@
     "function claim(address _receiver,uint256 _tokenId,uint256 _quantity,address _currency,uint256 _pricePerToken,(bytes32[] proof,uint256 quantityLimitPerWallet,uint256 pricePerToken,address currency) _allowlistProof,bytes _data) payable"
   ];
 
-  // DOM elements
   const mintedText = document.getElementById("mintedText");
   const priceText = document.getElementById("priceText");
   const youHoldText = document.getElementById("youHoldText");
@@ -321,7 +316,6 @@
   const connectBtn = document.getElementById("connectBtn");
   const mintStatus = document.getElementById("mintStatus");
 
-  // State
   let readProvider;
   let readContract;
   let currentPriceWei = null;
@@ -413,31 +407,35 @@
     }
   }
 
+  // FIX: connect wallet pakai BrowserProvider, minta accounts, dan update label tombol
   async function connectWallet() {
     if (!window.ethereum) {
       alert("No wallet detected. Open this page in Base Wallet, Rainbow, or a browser with MetaMask.");
       return;
     }
     try {
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts"
-      });
-      if (!accounts || !accounts.length) return;
+      const browserProvider = new ethers.BrowserProvider(window.ethereum);
 
-      const chainIdHex = await window.ethereum.request({
-        method: "eth_chainId"
-      });
-      const current = parseInt(chainIdHex, 16);
-      if (current !== CHAIN_ID) {
+      // minta izin connect
+      await browserProvider.send("eth_requestAccounts", []);
+
+      const network = await browserProvider.getNetwork();
+      if (Number(network.chainId) !== CHAIN_ID) {
         await window.ethereum.request({
           method: "wallet_switchEthereumChain",
           params: [{ chainId: CHAIN_ID_HEX }]
         });
       }
 
-      currentAccount = accounts[0];
+      const signer = await browserProvider.getSigner();
+      const addr = await signer.getAddress();
+      currentAccount = addr;
+
+      const short = addr.slice(0, 6) + "..." + addr.slice(-4);
+      connectBtn.textContent = short;
+
       await refreshBalance();
-      setStatus("", true);
+      setStatus("Wallet connected.", true);
     } catch (err) {
       console.error("connectWallet error", err);
       setStatus(err.message || "Failed to connect wallet.", false);
@@ -515,17 +513,16 @@
     }
   }
 
-  // Events
   qtyInput.addEventListener("input", () => {
     if (qtyInput.value === "") return updateEstimate();
     const n = parseInt(qtyInput.value, 10);
     if (!Number.isFinite(n) || n <= 0) qtyInput.value = "1";
     updateEstimate();
   });
+
   connectBtn.addEventListener("click", connectWallet);
   mintBtn.addEventListener("click", handleMint);
 
-  // Init
   loadOnchainInfo();
 </script>
 </body>
