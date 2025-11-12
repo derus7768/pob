@@ -1,160 +1,211 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Proof of Build</title>
-  <meta name="theme-color" content="#0a0f12" />
-  <link rel="preload" href="/og.png" as="image" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- OG + Miniapp preview -->
+  <meta property="og:title" content="Proof of Build" />
+  <meta property="og:description" content="Mint your onchain builder badge on Base." />
+  <meta property="og:image" content="https://pob-lyart.vercel.app/og.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://pob-lyart.vercel.app" />
+
+  <!-- Farcaster MiniApp button (opsional, nanti bisa diaktifkan lagi) -->
+  <meta name="fc:miniapp"
+        content='{"version":"1","imageUrl":"https://pob-lyart.vercel.app/og.png","button":{"title":"Open Mint","action":{"type":"launch_miniapp","name":"Proof of Build","url":"https://pob-lyart.vercel.app"}}}' />
+
+  <link rel="icon" href="https://pob-lyart.vercel.app/icon.png" />
   <style>
-    :root{
-      --bg:#0a0f12;            /* kanvas gelap */
-      --panel:#0d1419;         /* panel gelap */
-      --text:#dfe6eb;          /* teks utama */
-      --muted:#9fb0bb;         /* teks sekunder */
-      --brand:#53e6ff;         /* neon cyan */
-      --brand-weak:rgba(83,230,255,.15);
-      --ring: rgba(83,230,255,.35);
-      --radius:18px;
-      --shadow:0 10px 40px rgba(0,0,0,.5);
-      --glow:0 0 0 1px rgba(255,255,255,.08), 0 0 40px var(--brand-weak);
-      --max: 880px;            /* lebar konten */
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0; background:radial-gradient(1200px 700px at 50% -10%, #10202a 0%, var(--bg) 55%) fixed;
-      color:var(--text); font:500 16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Helvetica,Arial;
-    }
-    .wrap{max-width:var(--max); margin:32px auto; padding:0 16px}
-    .card{
-      background:linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.01));
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:calc(var(--radius) + 6px);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-
-    /* hero image = aspek 1000/679 */
-    .hero{
-      position:relative; padding:16px; background:linear-gradient(180deg,#121a20,#0c1216);
-      border-bottom:1px solid rgba(255,255,255,.06);
-    }
-    .hero figure{
-      margin:0; border-radius:24px; overflow:hidden; box-shadow:var(--glow);
-      aspect-ratio: 1000 / 679; background:#000;
-    }
-    .hero img{width:100%; height:100%; object-fit:cover; display:block}
-
+    :root{--bg:#0a0f12;--panel:#0d1419;--text:#dfe6eb;--muted:#9fb0bb;--brand:#53e6ff;--radius:18px}
+    *{box-sizing:border-box} body{margin:0;background:#0a0f12;color:var(--text);font:500 16px/1.5 system-ui,Inter}
+    .wrap{max-width:880px;margin:28px auto;padding:0 16px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01));border:1px solid rgba(255,255,255,.06);border-radius:22px;overflow:hidden}
+    .hero{padding:16px;background:linear-gradient(180deg,#121a20,#0c1216);border-bottom:1px solid rgba(255,255,255,.06)}
+    .hero img{width:100%;display:block;border-radius:16px}
     .content{padding:22px}
-    h1{margin:.2rem 0 1rem; font-weight:700; letter-spacing:.2px; font-size:clamp(22px,3.2vw,28px)}
+    h1{margin:.2rem 0 1rem;font-weight:800;letter-spacing:.2px}
     .muted{color:var(--muted)}
-    .grid{
-      display:grid; gap:14px;
-      grid-template-columns: 1fr auto; align-items:center;
-      margin:14px 0 16px;
-    }
-    .stat{font-size:14px; color:var(--muted)}
-    .stat b{color:var(--text)}
-    .row{display:flex; gap:12px; align-items:center; margin:16px 0}
-    input.qty{
-      width:140px; height:48px; border-radius:12px;
-      background:#0b1216; border:1px solid rgba(255,255,255,.08);
-      color:var(--text); padding:0 14px; font:600 16px/48px inherit;
-    }
-    .btn{
-      height:48px; padding:0 22px; border-radius:14px; border:0; cursor:pointer;
-      font-weight:700; letter-spacing:.2px;
-    }
-    .btn-primary{
-      background:linear-gradient(180deg, rgba(83,230,255,.9), rgba(43,170,210,.9));
-      color:#001317; box-shadow:0 10px 30px var(--brand-weak);
-    }
-    .btn-primary:disabled{opacity:.5; cursor:not-allowed}
-    .btn-outline{
-      background:transparent; color:var(--text);
-      border:1.5px solid var(--ring); box-shadow:inset 0 0 0 1px rgba(255,255,255,.05);
-    }
-    .addr{
-      margin-top:10px; display:inline-block; font-size:14px; color:var(--muted);
-      padding:10px 14px; border:1px dashed rgba(255,255,255,.12); border-radius:12px;
-    }
-    footer{opacity:.7; font-size:12px; margin:14px 0 8px}
-    @media (max-width:560px){
-      .grid{grid-template-columns: 1fr}
-      .row{flex-direction:column; align-items:stretch}
-      input.qty{width:100%}
-      .btn{width:100%}
-    }
+    .row{display:flex;gap:12px;align-items:center;margin:12px 0}
+    input.qty{width:140px;height:48px;border-radius:12px;background:#0b1216;border:1px solid rgba(255,255,255,.08);color:var(--text);padding:0 14px;font:600 16px/48px inherit}
+    button{height:48px;padding:0 18px;border-radius:12px;border:0;cursor:pointer;font-weight:800;letter-spacing:.2px}
+    .primary{background:linear-gradient(180deg,rgba(83,230,255,.9),rgba(43,170,210,.9));color:#001317}
+    .outline{background:transparent;color:var(--text);border:1.5px solid rgba(83,230,255,.35)}
+    .stat{font-size:14px;color:var(--muted)}
+    .addr{display:inline-block;margin-top:8px;padding:10px 14px;border:1px dashed rgba(255,255,255,.12);border-radius:12px;color:var(--muted)}
+    @media (max-width:560px){.row{flex-direction:column;align-items:stretch} input.qty,button{width:100%}}
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
-      <section class="hero">
-        <figure>
-          <img src="/og.png" alt="POB cover" />
-        </figure>
-      </section>
-
-      <section class="content">
+      <div class="hero"><img src="/og.png" alt="POB"></div>
+      <div class="content">
         <h1>Proof of Build</h1>
         <div class="muted">Chain: <b style="color:#cbe9f2">Base</b></div>
+        <p class="muted">Mint your onchain builder badge and join early Base miniapp creators.</p>
 
-        <p class="muted" style="margin:10px 0 14px">
-          Proof of Build is a Base-native collectible for early miniapp creators and supporters.
-          Mint as many as you want, keep it as your onchain builder badge.
-        </p>
-
-        <div class="grid">
-          <div class="stat">Minted: <b id="minted">0 / 10,000 (0.00%)</b></div>
-          <div class="stat">Price: <b>0.0001 ETH</b></div>
-        </div>
-
-        <div class="grid" style="margin-top:0">
-          <div class="stat">You hold: <b id="youHold">0 POB</b></div>
-          <div class="stat">Contract: <a id="addr" class="muted" target="_blank" rel="noopener">0x01b9...6386C</a></div>
-        </div>
+        <div class="stat" id="stats">Minted: — &middot; Price: —</div>
 
         <div class="row">
-          <input class="qty" id="qty" type="number" min="1" step="1" value="1" />
-          <button class="btn btn-primary" id="mintBtn">Mint POB</button>
+          <input id="qty" class="qty" type="number" min="1" step="1" value="1">
+          <button id="mint" class="primary">Mint POB</button>
         </div>
-
-        <div class="row" style="margin-top:8px">
-          <button class="btn btn-outline" id="connectBtn">Connect wallet</button>
-        </div>
-
+        <div class="row"><button id="connect" class="outline">Connect wallet</button></div>
         <span class="addr" id="acct">Wallet: not connected</span>
-
-        <footer class="muted">
-          If you cast this link on Warpcast and the preview doesn’t show, make sure there is
-          <b>no extra space or newline after the URL</b> in your cast.
-        </footer>
-      </section>
+        <div class="stat" style="margin-top:8px">Contract:
+          <a id="caddr" href="#" target="_blank" rel="noopener" class="muted"></a>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- your existing mint logic may already include ethers/viem; this is just the connect + UI glue -->
+  <!-- Ethers v6 (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.2/dist/ethers.umd.min.js"></script>
   <script>
-    const CONTRACT = "0x01b91784C9B80d7fEfb206E2E1FC63ef1616386C";
-    const BASESCAN = "https://basescan.org/address/" + CONTRACT;
-    document.getElementById('addr').href = BASESCAN;
+    // ====== KONFIG ======
+    const CONTRACT_ADDRESS = "0x81cF10170CbdEffe743BA11B8fFc1678b84E8AaB";  // Base mainnet
+    const BASE_SCAN = "https://basescan.org/address/" + CONTRACT_ADDRESS;
+    document.getElementById('caddr').textContent = CONTRACT_ADDRESS.slice(0,6)+"…"+CONTRACT_ADDRESS.slice(-4);
+    document.getElementById('caddr').href = BASE_SCAN;
 
-    const acctEl = document.getElementById('acct');
-    const connectBtn = document.getElementById('connectBtn');
+    // ABI minimal: fungsi yang umum pada kontrak NFTs2Me/ERC721A
+    const ABI = [
+      // reads (coba beberapa nama umum)
+      {"type":"function","stateMutability":"view","name":"totalSupply","inputs":[],"outputs":[{"type":"uint256"}]},
+      {"type":"function","stateMutability":"view","name":"maxSupply","inputs":[],"outputs":[{"type":"uint256"}]},
+      {"type":"function","stateMutability":"view","name":"price","inputs":[],"outputs":[{"type":"uint256"}]},
+      {"type":"function","stateMutability":"view","name":"mintPrice","inputs":[],"outputs":[{"type":"uint256"}]},
+      {"type":"function","stateMutability":"view","name":"cost","inputs":[],"outputs":[{"type":"uint256"}]},
+      // writes (kami coba berurutan)
+      {"type":"function","stateMutability":"payable","name":"mint","inputs":[{"name":"_amount","type":"uint256"}],"outputs":[]},
+      {"type":"function","stateMutability":"payable","name":"publicMint","inputs":[{"name":"_amount","type":"uint256"}],"outputs":[]},
+      {"type":"function","stateMutability":"payable","name":"mintPublic","inputs":[{"name":"_amount","type":"uint256"}],"outputs":[]},
+      {"type":"function","stateMutability":"payable","name":"safeMint","inputs":[{"name":"_amount","type":"uint256"}],"outputs":[]}
+    ];
 
-    async function connectWallet(){
-      if(!window.ethereum){ alert("Install a wallet (e.g. Coinbase Wallet / Rabby / MetaMask)."); return; }
-      const [acc] = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      acctEl.textContent = "Wallet: " + acc.slice(0,6)+"…"+acc.slice(-4);
-      connectBtn.textContent = "Wallet connected";
+    const CHAIN_ID_HEX = "0x2105"; // 8453
+
+    // state
+    let provider, signer, contract, account, unitPriceWei = null;
+
+    function alertMsg(msg){
+      // gunakan alert standar supaya error langsung terbaca di mobile/Farcaster miniapp
+      alert(msg);
     }
 
-    connectBtn.addEventListener('click', connectWallet);
+    async function ensureBase(){
+      if(!window.ethereum){ alertMsg("Install wallet (Coinbase / MetaMask / Rabby)."); throw new Error("no wallet"); }
+      const cur = await window.ethereum.request({ method: "eth_chainId" });
+      if(cur !== CHAIN_ID_HEX){
+        await window.ethereum.request({
+          method: "wallet_switchEthereumChain",
+          params: [{ chainId: CHAIN_ID_HEX }]
+        }).catch(async (e) => {
+          // bila chain belum ada, coba add
+          if(e.code === 4902){
+            await window.ethereum.request({
+              method: "wallet_addEthereumChain",
+              params: [{
+                chainId: CHAIN_ID_HEX,
+                chainName: "Base",
+                nativeCurrency: { name: "Ether", symbol: "ETH", decimals: 18 },
+                rpcUrls: ["https://mainnet.base.org"],
+                blockExplorerUrls: ["https://basescan.org"]
+              }]
+            });
+          } else { throw e; }
+        });
+      }
+    }
 
-    // hook up your existing mint handler if needed:
-    // document.getElementById('mintBtn').addEventListener('click', yourExistingMintFunction);
+    async function connect(){
+      await ensureBase();
+      provider = new ethers.BrowserProvider(window.ethereum);
+      const accs = await provider.send("eth_requestAccounts", []);
+      signer = await provider.getSigner();
+      account = await signer.getAddress();
+      contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, signer);
+      document.getElementById("acct").textContent = "Wallet: " + account.slice(0,6)+"…"+account.slice(-4);
+      document.getElementById("connect").textContent = "Wallet connected";
+      await refreshStats();
+    }
+
+    async function tryReadPrice(){
+      // coba beberapa getter umum
+      const getters = ["price","mintPrice","cost"];
+      for(const g of getters){
+        try {
+          const v = await contract[g]();
+          if(v && v > 0n){ return v; }
+        } catch(_) {}
+      }
+      return null; // kalau kontrak pakai harga 0 atau nama berbeda
+    }
+
+    async function refreshStats(){
+      let ts = "—", max = "—";
+      try { ts = (await contract.totalSupply()).toString(); } catch(_) {}
+      try { max = (await contract.maxSupply()).toString(); } catch(_) {}
+      try { unitPriceWei = await tryReadPrice(); } catch(_) { unitPriceWei = null; }
+
+      const priceStr = unitPriceWei ? (ethers.formatEther(unitPriceWei) + " ETH") : "0 ETH";
+      const stat = `Minted: ${ts}${max!=="—" ? " / "+max : ""} · Price: ${priceStr}`;
+      document.getElementById("stats").textContent = stat;
+    }
+
+    function getQty(){
+      const v = parseInt(document.getElementById("qty").value || "1", 10);
+      return Math.max(1, v);
+    }
+
+    async function mintNow(){
+      try{
+        if(!signer){ await connect(); }
+        const qty = getQty();
+
+        // kalau price tidak terbaca, asumsikan 0 (free) – kamu bisa set manual di dashboard
+        if(unitPriceWei === null){ unitPriceWei = 0n; }
+        const value = unitPriceWei * BigInt(qty);
+
+        // coba beberapa nama fungsi mint umum
+        const candidates = ["mint","publicMint","mintPublic","safeMint"];
+        let lastErr;
+        for(const fn of candidates){
+          if(typeof contract[fn] !== "function") continue;
+          try{
+            const tx = await contract[fn](qty, { value });
+            alertMsg("Tx sent: " + tx.hash);
+            const rc = await tx.wait();
+            alertMsg("Mint success. Block: " + rc.blockNumber);
+            await refreshStats();
+            return;
+          }catch(e){
+            lastErr = e;
+          }
+        }
+        // kalau semua gagal:
+        console.error(lastErr);
+        const msg = (lastErr && (lastErr.shortMessage || lastErr.message)) || "Mint failed";
+        alertMsg("Mint gagal: " + msg);
+      }catch(e){
+        console.error(e);
+        alertMsg(String(e && e.message || e));
+      }
+    }
+
+    document.getElementById("connect").addEventListener("click", connect);
+    document.getElementById("mint").addEventListener("click", mintNow);
+
+    // auto: kalau wallet sudah ada, refresh info read-only
+    (async () => {
+      if(window.ethereum){
+        const prov = new ethers.BrowserProvider(window.ethereum);
+        contract = new ethers.Contract(CONTRACT_ADDRESS, ABI, prov);
+        refreshStats().catch(()=>{});
+      }
+    })();
   </script>
 </body>
 </html>
