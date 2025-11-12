@@ -6,22 +6,33 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Mint your onchain builder badge on Base." />
 
-<!-- OG + Farcaster miniapp -->
+<!-- Open Graph preview -->
 <meta property="og:title" content="Proof of Build">
 <meta property="og:description" content="Join early Base miniapp creators.">
-<meta property="og:image" content="./og.png">
+<meta property="og:image" content="https://pob-lyart.vercel.app/og.png">
 <meta property="og:url" content="https://pob-lyart.vercel.app">
 <meta name="theme-color" content="#0bd2ff">
+
+<!-- Farcaster miniapp button -->
 <meta name="fc:miniapp" content='{
-  "version":"1",
-  "imageUrl":"https://pob-lyart.vercel.app/og.png",
-  "button":{"title":"Mint POB","action":{"type":"launch_miniapp","name":"Proof of Build","url":"https://pob-lyart.vercel.app","splashImageUrl":"https://pob-lyart.vercel.app/icon.png","splashBackgroundColor":"#0d1117"}}
+  "version": "1",
+  "imageUrl": "https://pob-lyart.vercel.app/og.png",
+  "button": {
+    "title": "Mint POB",
+    "action": {
+      "type": "launch_miniapp",
+      "name": "Proof of Build",
+      "url": "https://pob-lyart.vercel.app",
+      "splashImageUrl": "https://pob-lyart.vercel.app/icon.png",
+      "splashBackgroundColor": "#0d1117"
+    }
+  }
 }'/>
 
 <link rel="icon" href="./icon.png">
 <style>
   :root{--bg:#0b0f14;--card:#0f1620;--muted:#9bb0bd;--text:#eaf2f7;--brand:#39d5ff}
-  *{box-sizing:border-box}html,body{height:100%}
+  *{box-sizing:border-box} html,body{height:100%}
   body{margin:0;background:radial-gradient(1100px 700px at 50% -10%,#133244 0,#0b0f14 55%);color:var(--text);font:500 16px/1.55 Inter,system-ui,Segoe UI,Roboto,Arial}
   .wrap{max-width:880px;margin:28px auto;padding:0 16px}
   .card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.08);border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.45);overflow:hidden}
@@ -30,16 +41,12 @@
   .content{padding:22px}
   h1{margin:0 0 10px;font-size:clamp(24px,3.2vw,30px)}
   .muted{color:var(--muted)}
-  .grid{display:grid;gap:10px;grid-template-columns:1fr auto}
-  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}
-  input.qty{width:140px;height:48px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0b1216;color:var(--text);padding:0 14px}
-  .btn{height:48px;padding:0 18px;border-radius:12px;border:1px solid transparent;cursor:pointer;font-weight:700}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+  .btn{height:50px;padding:0 18px;border-radius:12px;border:1px solid transparent;cursor:pointer;font-weight:800}
   .btn.primary{background:linear-gradient(180deg,rgba(57,213,255,.95),rgba(16,136,186,.95));color:#00131a;box-shadow:0 10px 30px rgba(57,213,255,.18)}
   .btn.ghost{background:transparent;color:var(--text);border-color:rgba(57,213,255,.35)}
-  .addr{font-size:14px;color:var(--muted);margin-top:10px}
-  .toast{margin-top:12px;padding:10px 12px;border-radius:10px;background:rgba(57,213,255,.08);border:1px solid rgba(57,213,255,.25);font-size:14px}
+  .hint{margin-top:12px;font-size:14px;color:var(--muted)}
   a.link{color:#9be2ff;text-decoration:none}
-  @media (max-width:560px){.grid{grid-template-columns:1fr} input.qty{width:100%} .btn{flex:1}}
 </style>
 </head>
 <body>
@@ -49,147 +56,40 @@
       <div class="content">
         <h1>Proof of Build</h1>
         <div class="muted">Chain: <b style="color:#cbe9f2">Base</b></div>
-        <p class="muted" style="margin:8px 0 12px">Mint your onchain builder badge and join early Base miniapp creators.</p>
-
-        <div class="grid">
-          <div class="muted">You hold: <b id="youHold">–</b></div>
-          <div class="muted">Price: <b id="price">–</b></div>
-        </div>
-        <div class="grid" style="margin-top:6px">
-          <div class="muted">Contract: <a id="scan" class="link" target="_blank">view on BaseScan</a></div>
-          <div class="muted">Status: <b id="net">–</b></div>
-        </div>
+        <p class="muted" style="margin:8px 0 12px">
+          Mint your onchain builder badge and join early Base miniapp creators.
+        </p>
 
         <div class="row">
-          <input id="qty" class="qty" type="number" min="1" value="1">
-          <button id="mintBtn" class="btn primary">Mint POB</button>
-          <button id="connectBtn" class="btn ghost">Connect wallet</button>
+          <button id="mintBtn" class="btn primary">Open Official Mint</button>
+          <a id="scan" class="btn ghost" target="_blank" rel="noopener noreferrer">View on BaseScan</a>
         </div>
-        <div class="addr" id="acct">Wallet: not connected</div>
-        <div class="toast" id="toast" style="display:none"></div>
+
+        <div class="hint">
+          Mint dibuka di halaman resmi (NFTS2ME/Zora) supaya order <b>Seaport</b> terbentuk dengan benar.
+          Miniapp ini sengaja tidak memanggil kontrak langsung.
+        </div>
       </div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/ethers@6.11.1/dist/ethers.umd.min.js"></script>
-  <script>
-    // ====== KONFIGURASI (EDIT INI SAJA) ======
-    const CONTRACT = "0x81cF10170CbdEffe743BA11B8fFc1678b84E8AaB"; // isi kontrak barumu
-    const MINT_FN  = "mintEfficientN2M_001Z5BWH";                  // nama fungsi mint di BaseScan
-    const MINT_TAKES_QTY = true;                                   // jika fungsi TIDAK butuh argumen -> set false
-    const PRICE_WEI_DEFAULT = 200000000000000n;                     // 0.0002 ETH (ubah jika beda)
-    // =========================================
+<script>
+  // === GANTI URL INI DENGAN LINK MINT RESMI KAMU ===
+  const MINT_URL = "https://proof-of-build.nfts2.me";   // contoh
+  // (opsional) isi alamat kontrak untuk tombol BaseScan
+  const CONTRACT = "0x81cF10170CbdEffe743BA11B8fFc1678b84E8AaB";
 
-    const BASE_ID_HEX = "0x2105";
-    const $ = (s)=>document.querySelector(s);
-    $("#scan").href = "https://basescan.org/address/" + CONTRACT;
+  document.getElementById("mintBtn").addEventListener("click", () => {
+    // buka di tab yang sama (lebih ramah miniapp/browser dalam Warpcast)
+    window.location.href = MINT_URL;
+  });
 
-    let provider, signer, account, contract;
-
-    // ABI minimal: fungsi mint + balanceOf + (opsional) getter harga
-    const ABI = [
-      {"type":"function","name":MINT_FN,"stateMutability":"payable","inputs": MINT_TAKES_QTY ? [{"name":"quantity","type":"uint256"}] : [],"outputs":[]},
-      {"type":"function","name":"balanceOf","stateMutability":"view","inputs":[{"name":"owner","type":"address"}],"outputs":[{"type":"uint256"}]},
-      {"type":"function","name":"price","stateMutability":"view","inputs":[],"outputs":[{"type":"uint256"}]},
-      {"type":"function","name":"mintPrice","stateMutability":"view","inputs":[],"outputs":[{"type":"uint256"}]},
-      {"type":"function","name":"publicPrice","stateMutability":"view","inputs":[],"outputs":[{"type":"uint256"}]}
-    ];
-
-    function toast(msg, ok=false){
-      const t = $("#toast");
-      t.textContent = msg;
-      t.style.display = "block";
-      t.style.background = ok ? "rgba(0,160,120,.12)" : "rgba(57,213,255,.08)";
-    }
-
-    // ---- Provider picker (lebih stabil di Warpcast/Base App) ----
-    function pickProvider(){
-      if (window.ethereum) return window.ethereum;
-      // beberapa webview menaruh provider di window.coinbaseWallet
-      if (window.coinbaseWallet?.ethereum) return window.coinbaseWallet.ethereum;
-      return null;
-    }
-
-    async function ensureBase(eth){
-      const id = await eth.request({ method:"eth_chainId" }).catch(()=>null);
-      $("#net").textContent = id || "unknown";
-      if (id === BASE_ID_HEX) return;
-      try{
-        await eth.request({ method:"wallet_switchEthereumChain", params:[{ chainId: BASE_ID_HEX }] });
-      }catch(e){
-        if (e.code === 4902){
-          await eth.request({
-            method:"wallet_addEthereumChain",
-            params:[{
-              chainId: BASE_ID_HEX, chainName:"Base",
-              nativeCurrency:{name:"Ether",symbol:"ETH",decimals:18},
-              rpcUrls:["https://mainnet.base.org"],
-              blockExplorerUrls:["https://basescan.org"]
-            }]
-          });
-        } else { throw e; }
-      }
-    }
-
-    async function connect(){
-      const eth = pickProvider();
-      if (!eth){ toast("Wallet tidak ditemukan. Buka di Coinbase Wallet / MetaMask / Base App."); return; }
-      await ensureBase(eth);
-      provider = new ethers.BrowserProvider(eth, "any");
-      await provider.send("eth_requestAccounts", []);
-      signer = await provider.getSigner();
-      account = await signer.getAddress();
-      contract = new ethers.Contract(CONTRACT, ABI, signer);
-
-      $("#acct").textContent = "Wallet: " + account.slice(0,6) + "…" + account.slice(-4);
-      $("#connectBtn").textContent = "Wallet connected";
-      $("#net").textContent = "Base";
-      $("#youHold").textContent = (await balance()).toString() + " POB";
-      $("#price").textContent = (Number(await getPriceWei())/1e18).toFixed(4) + " ETH";
-      toast("Wallet connected di Base.", true);
-    }
-
-    async function balance(){
-      try { return await contract.balanceOf(account); } catch { return 0n; }
-    }
-
-    async function getPriceWei(){
-      const fns = ["price","mintPrice","publicPrice"];
-      for (const f of fns){
-        try{ const v = await contract[f](); if (v && v>0n) return v; }catch{}
-      }
-      return PRICE_WEI_DEFAULT;
-    }
-
-    async function mint(){
-      if (!signer) { await connect(); if (!signer) return; }
-      try{
-        const qty = BigInt(Math.max(1, parseInt($("#qty").value||"1",10)));
-        const value = (await getPriceWei()) * (MINT_TAKES_QTY ? qty : 1n);
-        let tx;
-
-        if (MINT_TAKES_QTY){
-          tx = await contract[MINT_FN](qty, { value });
-        } else {
-          // beberapa varian tidak menerima argumen
-          tx = await contract[MINT_FN]({ value });
-        }
-
-        toast("Tx dikirim: " + tx.hash);
-        await tx.wait();
-        $("#youHold").textContent = (await balance()).toString() + " POB";
-        toast("Mint sukses ✅ " + tx.hash, true);
-      }catch(e){
-        const m = (e.shortMessage||e.message||String(e));
-        if (/insufficient funds/i.test(m)) toast("Saldo ETH tidak cukup untuk harga + gas.");
-        else if (/rejected/i.test(m) || e.code===4001) toast("Transaksi dibatalkan.");
-        else if (/execution reverted/i.test(m)) toast("Execution reverted. Cek harga/qty/jendela claim di kontrak.");
-        else toast("Error: " + m);
-      }
-    }
-
-    $("#connectBtn").addEventListener("click", connect);
-    $("#mintBtn").addEventListener("click", mint);
-  </script>
+  const scan = document.getElementById("scan");
+  if (CONTRACT) {
+    scan.href = "https://basescan.org/address/" + CONTRACT;
+  } else {
+    scan.style.display = "none";
+  }
+</script>
 </body>
 </html>
